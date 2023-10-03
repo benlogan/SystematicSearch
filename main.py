@@ -4,6 +4,7 @@ import time
 
 import bibtexparser
 
+import matplotlib.pyplot as plt
 
 def consolidate_files(path, output):
     read_files = glob.glob(path + "*.bib")
@@ -62,26 +63,37 @@ def parse_file(filename):
 
     return parsed_lib
 
-def save_file(lib):
-    # write out the new cleaned file, return the file name
-    filename = 'data/output/deduped_' + str(time.time()) + '.bib'
-
+def save_file(lib, filename):
+    # write out the new cleaned file
     bibtexparser.write_file(filename, lib)
-
-    return filename
 
 def find_duplicates(search_lib):
     unique = set()
+    removal_list = []
 
     # what about duplicates on title?
+    # I need to ignore casing {}
+    # e.g. Xsorb: {A} software for...
+    # = Xsorb: A software for...
+    # this might be a little aggressive - it's finding a few more than bibdesk - check later (FIXME)
+    # also not dealing properly with 'emph{'
+    title_duplicate_count = 0
     for entry in search_lib.entries:
-        if entry.fields_dict['title'].value.casefold() not in unique:
-            unique.add(entry.fields_dict['title'].value.casefold())
-    print("sorted entries (removing duplicates by Title) : " + str(len(unique)))
+        title = entry.fields_dict['title'].value.casefold()
+        title = title.replace('{', '').replace('}', '')
+        if title not in unique:
+            unique.add(title)
+        else:
+            #print('duplicate title ' + title)
+            title_duplicate_count += 1
+            removal_list.append(entry)
+    print('found ' + str(title_duplicate_count) + ' duplicates by Title')
+    print('sorted entries (removing duplicates by Title) : ' + str(len(unique)))
 
-    return unique
+    return removal_list
 
 def analysis():
+    # FIXME this code is now broken and needs fixing, to run the gap analysis properly
     search_set = parse_file("data/output/consolidated.bib")
 
     manual_set = parse_file("data/input/MendeleyExport.bib")
@@ -102,8 +114,7 @@ def analysis():
     # (while ensuring the search results themselves don't go through the roof with false positives)
     print('NEED TO ADJUST SEARCH TO FIND MORE DOCS : ' + str(not_in_search))
 
-if __name__ == '__main__':
-
+def process_raw_data():
     time_sec = time.time()
 
     consolidated_filename = 'data/output/consolidated_' + str(time_sec) + '.bib'
@@ -111,7 +122,7 @@ if __name__ == '__main__':
     consolidate_files("data/input/search/v2/", consolidated_filename)
 
     # if I want to use a modified or manually cleaned consolidated file;
-    #consolidated_filename = 'data/output/consolidated_cleaned.bib'
+    # consolidated_filename = 'data/output/consolidated_cleaned.bib'
 
     # manual count (read file for certain strings)
     count_records(consolidated_filename)
@@ -125,13 +136,45 @@ if __name__ == '__main__':
     # you actually need to remove the failed (dupes) from the main block structure
     processed_lib.remove(processed_lib.failed_blocks)
 
-    cleaned_filename = save_file(processed_lib)
+    # remove duplicates by title
+    title_duplicates = find_duplicates(processed_lib)
+    processed_lib.remove(title_duplicates)
 
-    # FIXME come back to this later - remove duplicates by title
-    #search_set = find_duplicates(parse_file(cleaned_filename))
+    # write the cleaned data back to a file, to facilitate voting in bibdesk?
+    cleaned_filename = 'data/output/deduped_' + str(time.time()) + '.bib'
+    save_file(processed_lib, cleaned_filename)
 
-    # write this back to a file, to facilitate voting in bibdesk? - FIXME after lunch try this
+if __name__ == '__main__':
+    #process_raw_data()
+
     # or we could do the voting here? (pop up with Y/N - could be rapid)
-    #write_file(search_set)
 
-    # FIXME then get started on some visualisation/analysis!
+    # with voting in bibdesk, using the 'read' checkbox to indicate voted in...
+    lib = bibtexparser.library.Library()
+    blocks = []
+    parsed_voted_data = parse_file('data/output/deduped_1696368991.44827_voting.bib')
+    for entry in parsed_voted_data.entries:
+        if 'read' in entry.fields_dict and entry.fields_dict['read'].value == '1':
+            #print('FOUND SOMETHING VOTED IN')
+            blocks.append(entry)
+
+    # build a whole new library for exporting clean...
+    lib.add(blocks)
+    filename = 'data/output/voted_' + str(time.time()) + '.bib'
+    save_file(lib, filename)
+
+    # let's do some visualisation/analysis!
+    years = {}
+    for entry in parsed_voted_data.entries:
+        if 'year' in entry.fields_dict:
+            year = entry.fields_dict['year'].value
+            if year in years:
+                years[year] += 1
+            else:
+                years[year] = 1
+    #print(years)
+    sorted_years = dict(sorted(years.items()))
+    print(sorted_years)
+
+    plt.plot(list(sorted_years.keys()), list(sorted_years.values()))
+    plt.show()
