@@ -4,8 +4,6 @@ import time
 
 import bibtexparser
 
-from citation import Citation
-
 
 def consolidate_files(path, output):
     read_files = glob.glob(path + "*.bib")
@@ -42,66 +40,52 @@ def count_records(filename):
             if re.search("@incollection", line):
                 num_collection += 1
 
-    print('articles : ' + str(num_articles))
-    print('proceedings : ' + str(num_proceedings))
-    print('thesis : ' + str(num_thesis))
-    print('book : ' + str(num_book))
-    print('collection : ' + str(num_collection))
-    print('TOTAL : ' + str(num_articles + num_proceedings + num_thesis + num_book + num_collection))
+    #print('articles : ' + str(num_articles))
+    #print('proceedings : ' + str(num_proceedings))
+    #print('thesis : ' + str(num_thesis))
+    #print('book : ' + str(num_book))
+    #print('collection : ' + str(num_collection))
+    print('Manual Entry Count : ' + str(num_articles + num_proceedings + num_thesis + num_book + num_collection))
 
 def parse_file(filename):
-    # load into data frame?
-    # identify an individual record (citation) - must be a library for this?
-    with open(filename) as bibtex_file:
-        library = bibtexparser.load(bibtex_file)
-        # this is a list of dicts
-    print("mendeley entries : " + str(len(library.entries)))
-    return library
+    # read individual records (citations) - using a bibtex library
+    # using v2 of the bibtex library
+    # it will remove some duplicates (by ID) on initial parse
 
-def find_duplicates(filename):
-    print('processing file : ' + filename)
-    # load into data frame?
-    # identify an individual record (citation) - must be a library for this?
-    with open(filename) as bibtex_file:
-        library = bibtexparser.load(bibtex_file)
-        # this is a list of dicts
-    print("entries : " + str(len(library.entries)))
+    parsed_lib = bibtexparser.parse_file(filename)
 
-    #unique = list(set(library.entries))
-    #print("sorted entries : " + str(len(unique.entries)))
+    print('(' + filename + ') entries : ' + str(len(parsed_lib.entries)))
+    if len(parsed_lib.failed_blocks) > 0:
+        print("Some blocks failed to parse. Check the entries of `library.failed_blocks`.")
+    else:
+        print("All blocks parsed successfully")
 
+    return parsed_lib
+
+def save_file(lib):
+    # write out the new cleaned file, return the file name
+    filename = 'data/output/deduped_' + str(time.time()) + '.bib'
+
+    bibtexparser.write_file(filename, lib)
+
+    return filename
+
+def find_duplicates(search_lib):
     unique = set()
 
-    for entry in library.entries:
-        #print(entry)
-        #print(entry["ID"]) # this is the cite-key - should be unique, but we might have duplicates
-        #print(entry["ENTRYTYPE"])
-        #print(entry["year"])
-        #print(entry["title"])
-        #print('------------------------------------')
-        citation = Citation()
-        citation.key = entry["ID"]
-        citation.title = entry["title"]
-        if citation not in unique:
-            unique.add(citation)
-            # else print('not adding suspected duplicate : ' + citation.key)
+    # what about duplicates on title?
+    for entry in search_lib.entries:
+        if entry.fields_dict['title'].value.casefold() not in unique:
+            unique.add(entry.fields_dict['title'].value.casefold())
+    print("sorted entries (removing duplicates by Title) : " + str(len(unique)))
 
-    print("sorted entries (removing duplicates by ID) : " + str(len(unique)))
+    return unique
 
-    #what about duplicates on title?
-    truly_unique = set()
-    for citation in unique:
-        if citation.title.casefold() not in truly_unique:
-            truly_unique.add(citation.title.casefold())
-        # else print('not adding suspected duplicate : ' + citation.title.casefold())
-    print("sorted entries (removing duplicates by Title) : " + str(len(truly_unique)))
+def analysis():
+    search_set = parse_file("data/output/consolidated.bib")
 
-    return truly_unique
+    manual_set = parse_file("data/input/MendeleyExport.bib")
 
-def whatisthis():
-    search_set = find_duplicates("data/output/consolidated.bib")
-
-    manual_set = find_duplicates("data/input/MendeleyExport.bib")
     # parse_file("data/input/MendeleyExport.bib")
 
     # what do I have in my search set that I don't have in my manual set?
@@ -122,11 +106,32 @@ if __name__ == '__main__':
 
     time_sec = time.time()
 
-    output_filename = "data/output/consolidated_" + str(time_sec) + ".bib"
+    consolidated_filename = 'data/output/consolidated_' + str(time_sec) + '.bib'
 
-    consolidate_files("data/input/search/v2/", output_filename)
+    consolidate_files("data/input/search/v2/", consolidated_filename)
 
-    count_records(output_filename)
+    # if I want to use a modified or manually cleaned consolidated file;
+    #consolidated_filename = 'data/output/consolidated_cleaned.bib'
+
+    # manual count (read file for certain strings)
+    count_records(consolidated_filename)
+
+    # parse file (process of reading will remove some dupes)
+    processed_lib = parse_file(consolidated_filename)
 
     # FIXME - add a test to compare the pre-consolidated count with the final total
     # a manual check via loading the files in bibdesk is quite easy, in the mean time
+
+    # you actually need to remove the failed (dupes) from the main block structure
+    processed_lib.remove(processed_lib.failed_blocks)
+
+    cleaned_filename = save_file(processed_lib)
+
+    # FIXME come back to this later - remove duplicates by title
+    #search_set = find_duplicates(parse_file(cleaned_filename))
+
+    # write this back to a file, to facilitate voting in bibdesk? - FIXME after lunch try this
+    # or we could do the voting here? (pop up with Y/N - could be rapid)
+    #write_file(search_set)
+
+    # FIXME then get started on some visualisation/analysis!
