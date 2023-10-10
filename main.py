@@ -1,6 +1,7 @@
 import glob
 import re
 import time
+import datetime
 
 import bibtexparser
 
@@ -144,6 +145,103 @@ def process_raw_data():
     cleaned_filename = 'data/output/deduped_' + str(time.time()) + '.bib'
     save_file(processed_lib, cleaned_filename)
 
+# function to add value labels
+def add_labels(x, y):
+    for i in range(len(x)):
+        # plt.text(i, y[i] // 2, x[i], ha='center', rotation=90)
+        plt.text(i, 2, x[i], ha='center', rotation=90)
+
+def chart_publications():
+    years = {}
+    for entry in parsed_voted_data.entries:
+        if 'year' in entry.fields_dict:
+            year_string = entry.fields_dict['year'].value
+            year = datetime.datetime.strptime(year_string, '%Y').date()
+            if year in years:
+                years[year] += 1
+            else:
+                years[year] = 1
+
+    sorted_years = dict(sorted(years.items()))
+    sorted_years.pop(datetime.date(2024, 1, 1), None)  # won't error if it doesn't exist
+
+    plt.plot(list(sorted_years.keys()), list(sorted_years.values()), color='g')
+    plt.title("Green IT Publications")
+    plt.xlabel("Publication Year")
+    plt.ylabel("Publication Count")
+    plt.show()
+
+def chart_journals():
+    journals = {}
+    for entry in parsed_voted_data.entries:
+        # print(entry)
+        if 'journal' in entry.fields_dict:
+            journal_string = entry.fields_dict['journal'].value
+            if journal_string in journals:
+                journals[journal_string] += 1
+            else:
+                journals[journal_string] = 1
+    sorted_journals = dict(sorted(journals.items()))
+
+    from operator import itemgetter
+    journal_list = sorted(sorted_journals.items(), key=itemgetter(1))
+    journal_top10 = []
+    count = 0
+    while count < 10:
+        journal_top10.append(journal_list[(len(journal_list) - 1) - count])
+        count += 1
+    sjt = {}
+    for j in journal_top10:
+        sjt[j[0]] = j[1]
+
+    x = list(sjt.keys())
+    y = list(sjt.values())
+
+    add_labels(x, y)
+    # plt.xticks(rotation=90)
+    plt.xticks([])
+    plt.bar(x, y, color='g')
+    plt.title("Green IT Journals")
+    plt.xlabel("Journal")
+    plt.ylabel("Publication Count")
+    plt.show()
+
+# FIXME a lot of this code is common with top 10 journals
+def chart_authors():
+    authors = {}
+    for entry in parsed_voted_data.entries:
+        #print(entry)
+        if 'author' in entry.fields_dict:
+            author_string = entry.fields_dict['author'].value
+            result = re.split(r'\s+and\s+', author_string)
+            # simply count the occurrences of all names
+            for author_individual in result:
+                if author_individual in authors:
+                    authors[author_individual] += 1
+                else:
+                    authors[author_individual] = 1
+
+    sorted_authors_list = sorted(authors.items(), key=lambda item: item[1])
+    authors_top10 = []
+    count = 0
+    while count < 10:
+        authors_top10.append(sorted_authors_list[(len(sorted_authors_list) - 1) - count])
+        count += 1
+    sjt = {}
+    for j in authors_top10:
+        sjt[j[0]] = j[1]
+
+    x = list(sjt.keys())
+    y = list(sjt.values())
+
+    add_labels(x, y)
+    plt.xticks([])
+    plt.bar(x, y, color='g')
+    plt.title("Green IT Authors")
+    plt.xlabel("Author")
+    plt.ylabel("Publication Count")
+    plt.show()
+
 if __name__ == '__main__':
     #process_raw_data()
 
@@ -164,17 +262,13 @@ if __name__ == '__main__':
     save_file(lib, filename)
 
     # let's do some visualisation/analysis!
-    years = {}
-    for entry in parsed_voted_data.entries:
-        if 'year' in entry.fields_dict:
-            year = entry.fields_dict['year'].value
-            if year in years:
-                years[year] += 1
-            else:
-                years[year] = 1
-    #print(years)
-    sorted_years = dict(sorted(years.items()))
-    print(sorted_years)
+    #chart_publications()
 
-    plt.plot(list(sorted_years.keys()), list(sorted_years.values()))
-    plt.show()
+    # popular journals
+    chart_journals()
+
+    # popular authors (e.g. Lago)
+    #chart_authors()
+
+    # FIXME - plot them all together, or at the same time in different windows
+    # (useful to be able to save them individually)
