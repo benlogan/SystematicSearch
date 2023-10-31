@@ -13,3 +13,5 @@ For example, to execute the dblp search, run
 download_dblp.py - this will produce a series of BibTeX extracts, in the /download directory.
 
 You can use the utility code for quickly and easily consolidating those extracts into a single file - utility.py (consolidate_files)
+
+Use the post processor; post_process.py, to reapply the search (reapply_search) - this is necessary because of the many data quality issues resulting from the database searches.

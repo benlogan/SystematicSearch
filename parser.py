@@ -14,3 +14,18 @@ def parse_file(filename):
         print("All blocks parsed successfully")
 
     return parsed_lib
+
+def save_file(lib, filename):
+    # write out the new cleaned file
+    bibtexparser.write_file(filename, lib)
+
+def create_new_lib(data):
+    lib = bibtexparser.library.Library()
+    blocks = []
+
+    for entry in data:
+        blocks.append(entry)
+
+    # build a whole new library for exporting clean...
+    lib.add(blocks)
+    return lib
