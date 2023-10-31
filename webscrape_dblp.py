@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
+# This code is NOT being used. Use the direct download for dblp instead (more effective, less error prone)
+
 # Define the URL
 url = "https://dblp.org/search/publ?q=sustainable%20software%20engineering"
+# https://dblp.org/search/publ/bibtex?q=sustainable%20software%20engineering (and then download the .bib)
 
 # Send an HTTP GET request to the URL
 response = requests.get(url)
