@@ -12,10 +12,21 @@ FIELD_TITLE = 'title'
 # SEARCH QUERY;
 # (sustainab* OR green OR energy) AND (software OR "IT" OR computing OR cloud)
 
-SEARCH_STRING = r'(?=.*(sustainab\w*|green|energy))(?=.*(software|IT|computing|cloud))'
+#SEARCH_STRING = r'(?=.*(sustainab\w*|green|energy))(?=.*(software|\bIT\b|computing|cloud))'
+# adding case insensitivity for everything other than IT!
+SEARCH_STRING = r'(?i)(?=.*(sustainab\w*|green|energy))(?=(?i:.*(?!(?i:\bIT\b))(software|\bIT\b|computing|cloud)))'
 
 # We want to NOT match on these exclusion terms...
-SEARCH_EXCLUDE = r'^(?:(?!\bedge\b|\bwireless\b).)*$'
+SEARCH_EXCLUDE = (r'^(?i)(?:(?!\bedge\b|\bwireless\b|\bmobile\b|\bneural network\b|\biot\b|\bnetworks\b|\bnetworking\b|\bwearable\b'
+                  r'|\bcircuit\b|\bcircuits\b|\bvehicular\b|\bvehicle\b|\buav\b|\bbattery\b|\b5g\b|\bgrid\b|\bradio\b|\bfog\b'
+                  r'|\bphysics\b|\bquantum\b|\bdrones\b|\bradios\b|\bsocial\b|\bbuildings\b|\bhome\b|\boffice\b|\bsmartphone\b'
+                  r'|\bandroid\b|\bportable\b|\bmolecular\b|\bnano\b|\bneuro\b|\bvehicles\b|\bprotocol\b|\bpersonal\b'
+                  r'|\bembedded\b|\bcrypto\b|\bcryptography\b|\bcryptographic\b|\bblockchain\b|\brobotics\b|\brobot\b|\brobots\b'
+                  r'|\beducation\b|\bchemical\b|\bbiochemical\b|\bbluetooth\b|\braspberry\b|\bvoltage\b|\bsmartphones\b|\bvideo\b).)*$')
+
+#physics doesn't seem to be working
+#FIXME - group these later, so they are easier to edit/update/extend
+#FIXME - could I move to wildcard search on some of these similar terms?
 
 def reapply_search(data, search_query, debug):
     print('Executing Search : ' + search_query)
@@ -26,9 +37,10 @@ def reapply_search(data, search_query, debug):
             title_string = entry.fields_dict[FIELD_TITLE].value
             title_string = title_string.replace('\n', '')
             # strip the title of new line characters
-            # FIXME and should really remove the whitespace, though this doesn't break the regex matching
+            # should really remove the whitespace, though this doesn't break the regex matching
+            title_string = re.sub('\s+', ' ', title_string)
 
-            matches = re.findall(search_query, title_string, re.IGNORECASE)
+            matches = re.findall(search_query, title_string) # re.IGNORECASE (case sensitivity is handled in the expression)
 
             if not matches:
                 if debug:
