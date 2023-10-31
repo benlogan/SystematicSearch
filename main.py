@@ -1,20 +1,10 @@
-import glob
-import time
-
-import bibtexparser
-
 import matplotlib.pyplot as plt
 
 from charting import *
+from parser import parse_file, save_file
+from post_process import *
+from utility import consolidate_files
 
-def consolidate_files(path, output):
-    read_files = glob.glob(path + "*.bib")
-    print('Consolidating ' + str(len(read_files)) + ' .bib files')
-
-    with open(output, "wb") as outfile:
-        for f in read_files:
-            with open(f, "rb") as infile:
-                outfile.write(infile.read())
 
 def count_records(filename):
     num_articles = 0
@@ -48,25 +38,6 @@ def count_records(filename):
     #print('book : ' + str(num_book))
     #print('collection : ' + str(num_collection))
     print('Manual Entry Count : ' + str(num_articles + num_proceedings + num_thesis + num_book + num_collection))
-
-def parse_file(filename):
-    # read individual records (citations) - using a bibtex library
-    # using v2 of the bibtex library
-    # it will remove some duplicates (by ID) on initial parse
-
-    parsed_lib = bibtexparser.parse_file(filename)
-
-    print('(' + filename + ') entries : ' + str(len(parsed_lib.entries)))
-    if len(parsed_lib.failed_blocks) > 0:
-        print("Some blocks failed to parse. Check the entries of `library.failed_blocks`.")
-    else:
-        print("All blocks parsed successfully")
-
-    return parsed_lib
-
-def save_file(lib, filename):
-    # write out the new cleaned file
-    bibtexparser.write_file(filename, lib)
 
 def find_duplicates(search_lib):
     unique = set()
@@ -116,9 +87,8 @@ def analysis():
     print('NEED TO ADJUST SEARCH TO FIND MORE DOCS : ' + str(not_in_search))
 
 def process_raw_data():
-    time_sec = time.time()
 
-    consolidated_filename = 'data/output/consolidated_' + str(time_sec) + '.bib'
+    consolidated_filename = 'data/output/consolidated_' + str(time.time()) + '.bib'
 
     consolidate_files("data/input/search/v2/", consolidated_filename)
 
@@ -151,16 +121,16 @@ if __name__ == '__main__':
     # or we could do the voting here? (pop up with Y/N - could be rapid)
 
     # with voting in bibdesk, using the 'read' checkbox to indicate voted in...
-    lib = bibtexparser.library.Library()
-    blocks = []
+    vote_data = []
+
     parsed_voted_data = parse_file('data/output/deduped_1696368991.44827_voting.bib')
     for entry in parsed_voted_data.entries:
         if 'read' in entry.fields_dict and entry.fields_dict['read'].value == '1':
             #print('FOUND SOMETHING VOTED IN')
-            blocks.append(entry)
+            vote_data.append(entry)
 
-    # build a whole new library for exporting clean...
-    lib.add(blocks)
+    lib = create_new_lib(vote_data)
+
     filename = 'data/output/voted_' + str(time.time()) + '.bib'
     save_file(lib, filename)
 
@@ -174,7 +144,9 @@ if __name__ == '__main__':
     #chart_authors(parsed_voted_data, plt)
 
     # keyword cloud? or table to start
-    chart_keywords(parsed_voted_data, plt)
+    #chart_keywords(parsed_voted_data, plt)
 
     # FIXME - plot them all together, or at the same time in different windows
     # (useful to be able to save them individually)
+
+    reapply_search(parsed_voted_data)
