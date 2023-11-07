@@ -13,9 +13,6 @@ def consolidate_files(path, output):
 
 # FIXME not catching;
 
-# An Integral Arising in Computing the Energy of Crystals
-# An Integral Arising in Computing the Energy of Crystals {(M.} L. Glassar)
-
 # Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities
 # Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities. (Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities)
 # would be caught by dropping phd thesis
@@ -23,12 +20,8 @@ def consolidate_files(path, output):
 # Energy aware fuzzy approach for placement and consolidation in cloud data centers
 # Energy Aware Fuzzy Approach for {VNF} Placement and Consolidation in Cloud Data Centers
 
-# Energy efficiency in cloud computing data center: a survey on hardware technologies
-# Energy efficiency in cloud computing data centers: a survey on software technologies
-
 def find_duplicates(search_lib):
     unique = set()
-    #removal_list = []
     search_results = []
 
     # what about duplicates on title?
@@ -53,9 +46,7 @@ def find_duplicates(search_lib):
         else:
             print('duplicate title; \n' + title)
             title_duplicate_count += 1
-            #removal_list.append(entry)
     print('found ' + str(title_duplicate_count) + ' duplicates by Title')
     print('sorted entries (removing duplicates by Title) : ' + str(len(unique)))
 
-    #return removal_list
     return search_results
