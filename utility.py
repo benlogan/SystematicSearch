@@ -20,6 +20,9 @@ def consolidate_files(path, output):
 # Energy aware fuzzy approach for placement and consolidation in cloud data centers
 # Energy Aware Fuzzy Approach for {VNF} Placement and Consolidation in Cloud Data Centers
 
+# A Novel Convolution Computing Paradigm Based on {NOR} Flash Array With High Computing Speed and Energy Efficiency
+# A Novel Convolution Computing Paradigm Based on {NOR} Flash Array with High Computing Speed and Energy Efficient
+
 def find_duplicates(search_lib):
     unique = set()
     search_results = []
