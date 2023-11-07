@@ -8,6 +8,7 @@ FIELD_YEAR = 'year'
 FIELD_JOURNAL = 'journal'
 FIELD_AUTHOR = 'author'
 FIELD_KEYWORDS = 'keywords'
+FIELD_TITLE = 'title'
 CHART_LABEL_OFFSET = 0.02
 
 def add_labels(plt, x, y):
@@ -114,31 +115,4 @@ def chart_authors(data, plt):
     plt.title("Green IT Authors")
     plt.xlabel("Author")
     plt.ylabel("Publication Count")
-    plt.show()
-
-def chart_keywords(data, plt):
-    keywords = {}
-    for entry in data.entries:
-        if FIELD_KEYWORDS in entry.fields_dict:
-            result = entry.fields_dict[FIELD_KEYWORDS].value.split(',')
-            # simply count the occurrences of all keywords
-            for keyword_individual in result:
-                if keyword_individual.lower().strip() in keywords:
-                    keywords[keyword_individual.lower().strip()] += 1
-                else:
-                    keywords[keyword_individual.lower().strip()] = 1
-
-    sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
-
-    top20_keywords_dict = top_x(sorted_keywords_list,20)
-
-    x = list(top20_keywords_dict.keys())
-    y = list(top20_keywords_dict.values())
-
-    add_labels_h(plt, x, y)
-    plt.yticks([])
-    plt.barh(x, y, color=CHART_COLOUR)
-    plt.title("Green IT Keywords")
-    plt.ylabel("Keyword")
-    plt.xlabel("Publication Count")
     plt.show()

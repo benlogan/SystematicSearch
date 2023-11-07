@@ -1,9 +1,11 @@
+from datetime import time
+
 import matplotlib.pyplot as plt
 
 from charting import *
-from parser import parse_file, save_file
-from post_process import *
-from utility import consolidate_files
+from charting_keywords import chart_keywords, chart_keyphrases
+from parser import parse_file, save_file, create_new_lib
+from utility import consolidate_files, find_duplicates
 
 
 def count_records(filename):
@@ -92,10 +94,10 @@ def process_raw_data():
     cleaned_filename = 'data/output/deduped_' + str(time.time()) + '.bib'
     save_file(processed_lib, cleaned_filename)
 
-if __name__ == '__main__':
-    #process_raw_data()
+def voting():
+    # moving this code out, not currently using, come back to it later...
 
-    # or we could do the voting here? (pop up with Y/N - could be rapid)
+    # we could do the voting here? (pop up with Y/N - could be rapid)
 
     # with voting in bibdesk, using the 'read' checkbox to indicate voted in...
     vote_data = []
@@ -111,19 +113,26 @@ if __name__ == '__main__':
     filename = 'data/output/voted_' + str(time.time()) + '.bib'
     save_file(lib, filename)
 
+if __name__ == '__main__':
+    #process_raw_data()
+
+    # assuming you have some post-processed data, ready for analysis...
+    data = parse_file('data/output/cleaned_dblp_1699356918.509705.bib')
+
     # let's do some visualisation/analysis!
-    #chart_publications(parsed_voted_data, plt)
+    #chart_publications(data, plt)
 
     # popular journals
-    #chart_journals(parsed_voted_data, plt)
+    #chart_journals(data, plt)
 
     # popular authors (e.g. Lago)
-    #chart_authors(parsed_voted_data, plt)
+    #chart_authors(data, plt)
 
     # keyword cloud? or table to start
-    #chart_keywords(parsed_voted_data, plt)
+    #chart_keywords(data, plt)
+    chart_keyphrases(data, plt)
 
     # FIXME - plot them all together, or at the same time in different windows
     # (useful to be able to save them individually)
 
-    reapply_search(parsed_voted_data)
+    #reapply_search(parsed_voted_data)

@@ -37,6 +37,7 @@ def find_duplicates(search_lib):
         title = title.replace('{', '').replace('}', '')
         title = title.replace('-', ' ')
         title = title.replace(':', '')
+        title = title.replace(',', '')
         title = title.replace('\n', '')
         title = re.sub('\s{2,}', ' ', title)
         print(title)
