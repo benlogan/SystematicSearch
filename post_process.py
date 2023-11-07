@@ -1,6 +1,7 @@
 import re
 import time
 
+from utility import find_duplicates
 from parser import parse_file, save_file, create_new_lib
 
 FIELD_TITLE = 'title'
@@ -22,9 +23,9 @@ SEARCH_EXCLUDE = (r'^(?i)(?:(?!\bedge\b|\bwireless\b|\bmobile\b|\bneural network
                   r'|\bphysics\b|\bquantum\b|\bdrones\b|\bradios\b|\bsocial\b|\bbuildings\b|\bhome\b|\boffice\b|\bsmartphone\b'
                   r'|\bandroid\b|\bportable\b|\bmolecular\b|\bnano\b|\bneuro\b|\bvehicles\b|\bprotocol\b|\bpersonal\b'
                   r'|\bembedded\b|\bcrypto\b|\bcryptography\b|\bcryptographic\b|\bblockchain\b|\brobotics\b|\brobot\b|\brobots\b'
-                  r'|\beducation\b|\bchemical\b|\bbiochemical\b|\bbluetooth\b|\braspberry\b|\bvoltage\b|\bsmartphones\b|\bvideo\b).)*$')
+                  r'|\beducation\b|\bchemical\b|\bbiochemical\b|\bbluetooth\b|\braspberry\b|\bvoltage\b|\bsmartphones\b|\bvideo\b'
+                  r'|\bcyber\b|\bcrystals\b|\bspeech recognition\b|\bcorrection to\b|\bnanoscale\b|\bwave\b|\bcodec\b|\bmultiphysics\b).)*$')
 
-#physics doesn't seem to be working
 #FIXME - group these later, so they are easier to edit/update/extend
 #FIXME - could I move to wildcard search on some of these similar terms?
 
@@ -62,7 +63,9 @@ input_data = parse_file('data/output/consolidated_dblp_1698748522.405845.bib')
 results = reapply_search(input_data.entries, SEARCH_STRING, False)
 
 # exclusion criteria...
-results = reapply_search(results, SEARCH_EXCLUDE, True)
+results = reapply_search(results, SEARCH_EXCLUDE, False)
+
+results = find_duplicates(results)
 
 # build a new file containing the matches, ready for export
 lib = create_new_lib(results)

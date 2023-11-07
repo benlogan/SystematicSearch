@@ -39,31 +39,6 @@ def count_records(filename):
     #print('collection : ' + str(num_collection))
     print('Manual Entry Count : ' + str(num_articles + num_proceedings + num_thesis + num_book + num_collection))
 
-def find_duplicates(search_lib):
-    unique = set()
-    removal_list = []
-
-    # what about duplicates on title?
-    # I need to ignore casing {}
-    # e.g. Xsorb: {A} software for...
-    # = Xsorb: A software for...
-    # this might be a little aggressive - it's finding a few more than bibdesk - check later (FIXME)
-    # also not dealing properly with 'emph{'
-    title_duplicate_count = 0
-    for entry in search_lib.entries:
-        title = entry.fields_dict['title'].value.casefold()
-        title = title.replace('{', '').replace('}', '')
-        if title not in unique:
-            unique.add(title)
-        else:
-            #print('duplicate title ' + title)
-            title_duplicate_count += 1
-            removal_list.append(entry)
-    print('found ' + str(title_duplicate_count) + ' duplicates by Title')
-    print('sorted entries (removing duplicates by Title) : ' + str(len(unique)))
-
-    return removal_list
-
 def analysis():
     # FIXME this code is now broken and needs fixing, to run the gap analysis properly
     search_set = parse_file("data/output/consolidated.bib")
@@ -108,8 +83,10 @@ def process_raw_data():
     processed_lib.remove(processed_lib.failed_blocks)
 
     # remove duplicates by title
-    title_duplicates = find_duplicates(processed_lib)
-    processed_lib.remove(title_duplicates)
+    # FIXME this will now remove duplicates and return cleaned data structure
+    #title_duplicates = find_duplicates(processed_lib)
+    #processed_lib.remove(title_duplicates)
+    processed_lib = find_duplicates(processed_lib.entries) # untested code!
 
     # write the cleaned data back to a file, to facilitate voting in bibdesk?
     cleaned_filename = 'data/output/deduped_' + str(time.time()) + '.bib'
