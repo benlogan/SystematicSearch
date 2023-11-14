@@ -18,14 +18,19 @@ FIELD_TITLE = 'title'
 SEARCH_STRING = r'(?i)(?=.*(sustainab\w*|green|energy))(?=(?i:.*(?!(?i:\bIT\b))(software|\bIT\b|computing|cloud)))'
 
 # We want to NOT match on these exclusion terms...
-SEARCH_EXCLUDE = (r'^(?i)(?:(?!\bedge\b|\bwireless\b|\bmobile\b|\bneural network\b|\biot\b|\bnetworks\b|\bnetworking\b|\bwearable\b'
-                  r'|\bcircuit\b|\bcircuits\b|\bvehicular\b|\bvehicle\b|\buav\b|\bbattery\b|\b5g\b|\bgrid\b|\bradio\b|\bfog\b'
-                  r'|\bphysics\b|\bquantum\b|\bdrones\b|\bradios\b|\bsocial\b|\bbuildings\b|\bhome\b|\boffice\b|\bsmartphone\b'
-                  r'|\bandroid\b|\bportable\b|\bmolecular\b|\bnano\b|\bneuro\b|\bvehicles\b|\bprotocol\b|\bpersonal\b'
-                  r'|\bembedded\b|\bcrypto\b|\bcryptography\b|\bcryptographic\b|\bblockchain\b|\brobotics\b|\brobot\b|\brobots\b'
-                  r'|\beducation\b|\bchemical\b|\bbiochemical\b|\bbluetooth\b|\braspberry\b|\bvoltage\b|\bsmartphones\b|\bvideo\b'
-                  r'|\bcyber\b|\bcrystals\b|\bspeech recognition\b|\bcorrection to\b|\bnanoscale\b|\bwave\b|\bcodec\b|\bmultiphysics\b'
-                  r'|\bsolar\b|\bsmart homes\b|\burban\b|\bcampus\b).)*$')
+# SEARCH_EXCLUDE = (r'^(?i)(?:(?!\bedge\b|\bwireless\b).)*$')
+
+# construct programmatically from file...
+SEARCH_EXCLUDE = r'^(?i)(?:(?!'
+with open('data/words/exclusions.txt', 'r') as file:
+    line = file.readline()
+    while line:
+        SEARCH_EXCLUDE += '''\\b'''
+        SEARCH_EXCLUDE += line.strip()
+        SEARCH_EXCLUDE += '''\\b|'''
+        line = file.readline()
+    SEARCH_EXCLUDE = SEARCH_EXCLUDE[:-1] # remove last character, the trailing pipe
+    SEARCH_EXCLUDE += ').)*$'
 
 #FIXME - group these later, so they are easier to edit/update/extend
 #FIXME - could I move to wildcard search on some of these similar terms?
