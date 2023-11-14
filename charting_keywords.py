@@ -48,43 +48,17 @@ def chart_keywords(data, plt):
 def chart_keyphrases(data, plt):
     keywords = {}
 
-    # examples...
     # FIXME add support for term grouping (e.g. all the software eng related terms below)
     # FIXME join this phrase count to the keyword count (e.g. single word search like 'cloud')
-    keywords['virtual machines'] = 0
-    keywords['data center'] = 0
-    keywords['data centre'] = 0
-    keywords['data centers'] = 0
-    keywords['data centres'] = 0
-    keywords['datacentres'] = 0
-    keywords['datacenters'] = 0
-    keywords['datacentre'] = 0
-    keywords['datacenter'] = 0
-    keywords['software engineering'] = 0
-    keywords['software architecture'] = 0
-    keywords['software development'] = 0
-    keywords['software sustainability'] = 0
-    keywords['big data'] = 0
-    keywords['machine learning'] = 0
-    keywords['deep learning'] = 0
-    keywords['data science'] = 0
-    keywords['artificial intelligence'] = 0
-    keywords['green it'] = 0
-    keywords['high performance'] = 0
-    keywords['high-performance'] = 0
-    keywords['green computing'] = 0
-    keywords['cloud computing'] = 0
-    keywords['task scheduling'] = 0
-    keywords['job scheduling'] = 0
-    keywords['resource allocation'] = 0
-    keywords['resource scheduling'] = 0
-    keywords['resource optimization'] = 0
-    keywords['literature review'] = 0
-    keywords['mapping study'] = 0
-    keywords['survey'] = 0
-    keywords['energy efficient'] = 0
-    keywords['energy conservation'] = 0
-    # FIXME would be good if I didn't have to list these! OpenAI/Azure - 1st experiment wasn't successful
+
+    with open('data/words/phrases.txt', 'r') as file:
+        line = file.readline()
+        while line:
+            keywords[line.strip()] = 0
+            line = file.readline()
+
+    # FIXME would be good if I didn't have to list these manually!
+    # OpenAI/Azure - 1st experiment wasn't successful (key phrase extraction)
 
     for entry in data.entries:
         if FIELD_TITLE in entry.fields_dict:
