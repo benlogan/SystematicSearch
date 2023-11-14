@@ -21,27 +21,11 @@ def chart_keywords(data, plt):
                     keywords[cleaned_keyword] = 1
 
     # exclusions (common words)
-    keywords.pop('for')
-    keywords.pop('and')
-    keywords.pop('in')
-    keywords.pop('of')
-    keywords.pop('a')
-    keywords.pop('the')
-    keywords.pop('on')
-    keywords.pop('an')
-    keywords.pop('with')
-    keywords.pop('to')
-    keywords.pop('using')
-    keywords.pop('based')
-    keywords.pop('{a}')
-    keywords.pop('approach')
-    keywords.pop('towards')
-    keywords.pop('-')
-    keywords.pop('analysis')
-    keywords.pop('high')
-    keywords.pop('aware')
-    keywords.pop('task')
-    keywords.pop('dynamic')
+    with open('data/words/common_words.txt', 'r') as file:
+        line = file.readline()
+        while line:
+            keywords.pop(line.strip()) # strip() removes the newline character at the end
+            line = file.readline()
 
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
