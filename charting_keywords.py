@@ -45,10 +45,9 @@ def chart_keywords(data, plt):
     else:
         print('No Keywords Found!')
 
-def chart_keyphrases(data, plt):
+def extract_keyphrases(data):
     keywords = {}
 
-    # FIXME add support for term grouping (e.g. all the software eng related terms below)
     # FIXME join this phrase count to the keyword count (e.g. single word search like 'cloud')
 
     with open('data/words/phrases.txt', 'r') as file:
@@ -84,6 +83,12 @@ def chart_keyphrases(data, plt):
     keywords['software development/engineering'] = keywords['software engineering'] + keywords['software development']
     del keywords['software engineering']
     del keywords['software development']
+
+    return keywords
+
+def chart_keyphrases(data, plt):
+
+    keywords = extract_keyphrases(data)
 
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
