@@ -24,7 +24,8 @@ SEARCH_EXCLUDE = (r'^(?i)(?:(?!\bedge\b|\bwireless\b|\bmobile\b|\bneural network
                   r'|\bandroid\b|\bportable\b|\bmolecular\b|\bnano\b|\bneuro\b|\bvehicles\b|\bprotocol\b|\bpersonal\b'
                   r'|\bembedded\b|\bcrypto\b|\bcryptography\b|\bcryptographic\b|\bblockchain\b|\brobotics\b|\brobot\b|\brobots\b'
                   r'|\beducation\b|\bchemical\b|\bbiochemical\b|\bbluetooth\b|\braspberry\b|\bvoltage\b|\bsmartphones\b|\bvideo\b'
-                  r'|\bcyber\b|\bcrystals\b|\bspeech recognition\b|\bcorrection to\b|\bnanoscale\b|\bwave\b|\bcodec\b|\bmultiphysics\b).)*$')
+                  r'|\bcyber\b|\bcrystals\b|\bspeech recognition\b|\bcorrection to\b|\bnanoscale\b|\bwave\b|\bcodec\b|\bmultiphysics\b'
+                  r'|\bsolar\b|\bsmart homes\b|\burban\b|\bcampus\b).)*$')
 
 #FIXME - group these later, so they are easier to edit/update/extend
 #FIXME - could I move to wildcard search on some of these similar terms?
