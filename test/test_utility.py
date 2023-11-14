@@ -52,5 +52,30 @@ class TestUtility(unittest.TestCase):
 
         self.assertEqual(len(find_duplicates(add_mock_data(title1, title2))), 2)
 
+    # already handle this, but replace with blank space. probably need to test equality with no whitespace
+    def test_more_characters(self):
+        title1 = '''FPnew: An Open-Source Multi-Format Floating-Point Unit Architecture for Energy-Proportional Transprecision Computing'''
+        title2 = '''FPnew: An Open-Source Multiformat Floating-Point Unit Architecture for Energy-Proportional Transprecision Computing'''
+
+        self.assertEqual(len(find_duplicates(add_mock_data(title1, title2))), 2)
+
+    def test_seq_match(self):
+        title1 = '''{FEETINGS:} Framework for Energy Efficiency Testing to Improve Environmental Goal of the Software'''
+        title2 = '''{FEETINGS:} Framework for Energy Efficiency Testing to Improve eNvironmental Goals of the Software'''
+
+        self.assertEqual(len(find_duplicates(add_mock_data(title1, title2))), 2)
+
+    def test_seq_match_2(self):
+        title1 = '''Energy aware fuzzy approach for placement and consolidation in cloud data centers'''
+        title2 = '''Energy Aware Fuzzy Approach for {VNF} Placement and Consolidation in Cloud Data Centers'''
+
+        self.assertEqual(len(find_duplicates(add_mock_data(title1, title2))), 2)
+
+    def test_seq_match_3(self):
+        title1 = '''A Novel Convolution Computing Paradigm Based on {NOR} Flash Array With High Computing Speed and Energy Efficiency'''
+        title2 = '''A Novel Convolution Computing Paradigm Based on {NOR} Flash Array with High Computing Speed and Energy Efficient'''
+
+        self.assertEqual(len(find_duplicates(add_mock_data(title1, title2))), 2)
+
 if __name__=='__main__':
 	unittest.main()

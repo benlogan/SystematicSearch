@@ -1,5 +1,6 @@
 import glob
 import re
+from difflib import SequenceMatcher
 
 
 def consolidate_files(path, output):
@@ -16,12 +17,6 @@ def consolidate_files(path, output):
 # Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities
 # Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities. (Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities)
 # would be caught by dropping phd thesis
-
-# Energy aware fuzzy approach for placement and consolidation in cloud data centers
-# Energy Aware Fuzzy Approach for {VNF} Placement and Consolidation in Cloud Data Centers
-
-# A Novel Convolution Computing Paradigm Based on {NOR} Flash Array With High Computing Speed and Energy Efficiency
-# A Novel Convolution Computing Paradigm Based on {NOR} Flash Array with High Computing Speed and Energy Efficient
 
 def find_duplicates(search_lib):
     unique = set()
@@ -42,13 +37,33 @@ def find_duplicates(search_lib):
         title = title.replace(':', '')
         title = title.replace(',', '')
         title = title.replace('\n', '')
-        title = re.sub('\s{2,}', ' ', title)
-        print(title)
-        if title not in unique:
+        #title = re.sub('\s{2,}', ' ', title) # remove double whitespace
+        title = title.replace(" ", "") # just remove all whitespace for the equality check
+
+        similar_title = False
+        # sequence matching, for close matches
+        # this requires a comparison against every other title
+        # this logic dramatically increases processing time
+        for compare_title in unique:
+            ratio = SequenceMatcher(a=title, b=compare_title).quick_ratio() # ratio() is too slow
+            # note that this value requires careful tuning, even at 0.97 it is catching some false positives
+            # e.g. where the only change is the year, for conference proceedings
+            if ratio > 0.97 and ratio != 1:
+                #print('*********************')
+                #print('similar!? ' + str(ratio))
+                #print('title')
+                #print(title)
+                #print('compare title')
+                #print(compare_title)
+                #print('*********************')
+                similar_title = True
+
+        #print(title)
+        if title not in unique and not similar_title:
             unique.add(title)
             search_results.append(entry)
         else:
-            print('duplicate title; \n' + title)
+            #print('duplicate title; \n' + title)
             title_duplicate_count += 1
     print('found ' + str(title_duplicate_count) + ' duplicates by Title')
     print('sorted entries (removing duplicates by Title) : ' + str(len(unique)))
