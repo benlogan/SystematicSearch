@@ -1,7 +1,7 @@
 import re
 import time
 
-from utility import find_duplicates
+from utility import find_duplicates, remove_proceedings
 from parser import parse_file, save_file, create_new_lib
 
 FIELD_TITLE = 'title'
@@ -72,6 +72,8 @@ results = reapply_search(input_data.entries, SEARCH_STRING, False)
 results = reapply_search(results, SEARCH_EXCLUDE, False)
 
 results = find_duplicates(results)
+
+results = remove_proceedings(results)
 
 # build a new file containing the matches, ready for export
 lib = create_new_lib(results)

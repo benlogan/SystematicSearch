@@ -69,3 +69,16 @@ def find_duplicates(search_lib):
     print('sorted entries (removing duplicates by Title) : ' + str(len(unique)))
 
     return search_results
+
+def remove_proceedings(search_lib):
+    results = []
+
+    proceedings_count = 0
+    for entry in search_lib:
+        if entry.entry_type != 'proceedings':
+            results.append(entry)
+        else:
+            proceedings_count += 1
+    print('found ' + str(proceedings_count) + ' proceedings')
+
+    return results

@@ -118,3 +118,30 @@ def chart_authors(data, plt):
     plt.xlabel("Author")
     plt.ylabel("Publication Count")
     plt.show()
+
+def chart_types(data, plt):
+    fig = plt.figure()
+    ax = fig.add_subplot()
+
+    types = {}
+    for entry in data.entries:
+        type = entry.entry_type
+        if type in types:
+            types[type] += 1
+        else:
+            types[type] = 1
+
+    sorted_types_list = sorted(types.items(), key=lambda item: item[1])
+
+    top10_types_dict = top_x(sorted_types_list, 10)
+
+    x = list(top10_types_dict.keys())
+    y = list(top10_types_dict.values())
+
+    add_labels(plt, x, y)
+    plt.xticks([])
+    plt.bar(x, y, color=CHART_COLOUR)
+    plt.title("Green IT Publication Types")
+    plt.xlabel("Type")
+    plt.ylabel("Publication Count")
+    plt.show()
