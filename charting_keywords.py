@@ -70,19 +70,36 @@ def chart_keyphrases(data, plt):
     keywords['virtual machines'] = 0
     keywords['data center'] = 0
     keywords['data centre'] = 0
+    keywords['data centers'] = 0
+    keywords['data centres'] = 0
+    keywords['datacentres'] = 0
+    keywords['datacenters'] = 0
+    keywords['datacentre'] = 0
+    keywords['datacenter'] = 0
     keywords['software engineering'] = 0
     keywords['software architecture'] = 0
     keywords['software development'] = 0
     keywords['software sustainability'] = 0
     keywords['big data'] = 0
     keywords['machine learning'] = 0
+    keywords['deep learning'] = 0
+    keywords['data science'] = 0
     keywords['artificial intelligence'] = 0
     keywords['green it'] = 0
     keywords['high performance'] = 0
+    keywords['high-performance'] = 0
     keywords['green computing'] = 0
     keywords['cloud computing'] = 0
     keywords['task scheduling'] = 0
+    keywords['job scheduling'] = 0
+    keywords['resource allocation'] = 0
+    keywords['resource scheduling'] = 0
+    keywords['resource optimization'] = 0
     keywords['literature review'] = 0
+    keywords['mapping study'] = 0
+    keywords['survey'] = 0
+    keywords['energy efficient'] = 0
+    keywords['energy conservation'] = 0
     # FIXME would be good if I didn't have to list these! OpenAI/Azure - 1st experiment wasn't successful
 
     for entry in data.entries:
@@ -91,6 +108,24 @@ def chart_keyphrases(data, plt):
             for keyphrase in keywords:
                 if keyphrase in title:
                     keywords[keyphrase] += 1
+
+    # FIXME manual grouping
+    keywords['data center/centre'] = keywords['data center'] + keywords['data centre'] +\
+        keywords['data centers'] + keywords['data centres'] +\
+        keywords['datacentres'] + keywords['datacenters'] +\
+        keywords['datacentre'] + keywords['datacenter']
+    del keywords['data center']
+    del keywords['data centre']
+    del keywords['data centres']
+    del keywords['data centers']
+    del keywords['datacentre']
+    del keywords['datacenter']
+    del keywords['datacentres']
+    del keywords['datacenters']
+
+    keywords['software development/engineering'] = keywords['software engineering'] + keywords['software development']
+    del keywords['software engineering']
+    del keywords['software development']
 
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
