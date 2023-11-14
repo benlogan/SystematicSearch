@@ -74,7 +74,7 @@ def extract_keyphrases(data):
 
     # using the groups identified earlier, collate the counts and remove the individuals
     for grouped_line in groups:
-        group_name = grouped_line.split(',')[0] + ' (group)'
+        group_name = grouped_line.split(',')[0] + ' (*)'
         keywords[group_name] = 0
         for grouped_keyphrase in grouped_line.split(','):
             keywords[group_name] += keywords[grouped_keyphrase]
@@ -94,7 +94,7 @@ def chart_keyphrases(data, plt):
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
 
-        add_labels_h(plt, x, y)
+        add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
         plt.barh(x, y, color=CHART_COLOUR)
         plt.title("Green IT Key Phrases")

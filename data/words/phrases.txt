@@ -4,20 +4,12 @@ software engineering,software development
 software architecture
 software sustainability
 big data
-machine learning
-deep learning
-data science
-artificial intelligence
+machine learning,deep learning,data science,artificial intelligence
 green it
-high performance
-high-performance
+high performance,high-performance
 green computing
 cloud computing
-task scheduling
-job scheduling
-resource allocation
-resource scheduling
-resource optimization
+task scheduling,job scheduling,resource allocation,resource scheduling,resource optimization
 literature review
 mapping study
 survey

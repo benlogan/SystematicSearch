@@ -21,10 +21,12 @@ def add_labels(plt, x, y):
         plt.text(i, offset, x[i], ha='center', rotation=90)
 
 # for horizontal bar charts...
-def add_labels_h(plt, x, y):
+def add_labels_h(plt, x, y, total):
     offset = max(y) * CHART_LABEL_OFFSET
     for i in range(len(x)):
-        plt.text(offset, i, x[i], ha='left', va='center')
+        #plt.text(offset, i, x[i], ha='left', va='center')
+        # add the percentage of the total population
+        plt.text(offset, i, x[i] + ' ' + str(round(y[i]/total*100,2)) + '%', ha='left', va='center')
 
 # retrieve the top X elements from a sorted list (for charting a subset)
 def top_x(sorted_list, x):
