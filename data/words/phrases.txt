@@ -1,15 +1,7 @@
 virtual machines
-data center
-data centre
-data centers
-data centres
-datacentres
-datacenters
-datacentre
-datacenter
-software engineering
+data center,data centre,data centers,data centres,datacentres,datacenters,datacentre,datacenter
+software engineering,software development
 software architecture
-software development
 software sustainability
 big data
 machine learning

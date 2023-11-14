@@ -17,7 +17,7 @@ class TestChartingKeywords(unittest.TestCase):
     def test_extract_phrases_groups(self):
         data = parse_file('data/output/cleaned_dblp_1699956186.390304.bib')
         keywords = extract_keyphrases(data)
-        self.assertEqual(753, keywords['data center/centre'])
+        self.assertEqual(753, keywords['data center (group)'])
 
 if __name__=='__main__':
 	unittest.main()

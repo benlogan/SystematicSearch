@@ -45,19 +45,25 @@ def chart_keywords(data, plt):
     else:
         print('No Keywords Found!')
 
+# FIXME join this phrase count to the keyword count (e.g. single word search like 'cloud')
+# FIXME would be good if I didn't have to list these manually!
+# OpenAI/Azure - 1st experiment wasn't successful (key phrase extraction)
 def extract_keyphrases(data):
     keywords = {}
-
-    # FIXME join this phrase count to the keyword count (e.g. single word search like 'cloud')
+    groups = []
 
     with open('data/words/phrases.txt', 'r') as file:
         line = file.readline()
         while line:
-            keywords[line.strip()] = 0
+            line = line.strip()
+            if ',' in line:
+                groups.append(line)
+                # we still process them seperately, but group later...
+                for grouped_keyphrase in line.split(','):
+                    keywords[grouped_keyphrase] = 0
+            else:
+                keywords[line] = 0
             line = file.readline()
-
-    # FIXME would be good if I didn't have to list these manually!
-    # OpenAI/Azure - 1st experiment wasn't successful (key phrase extraction)
 
     for entry in data.entries:
         if FIELD_TITLE in entry.fields_dict:
@@ -66,23 +72,13 @@ def extract_keyphrases(data):
                 if keyphrase in title:
                     keywords[keyphrase] += 1
 
-    # FIXME manual grouping
-    keywords['data center/centre'] = keywords['data center'] + keywords['data centre'] +\
-        keywords['data centers'] + keywords['data centres'] +\
-        keywords['datacentres'] + keywords['datacenters'] +\
-        keywords['datacentre'] + keywords['datacenter']
-    del keywords['data center']
-    del keywords['data centre']
-    del keywords['data centres']
-    del keywords['data centers']
-    del keywords['datacentre']
-    del keywords['datacenter']
-    del keywords['datacentres']
-    del keywords['datacenters']
-
-    keywords['software development/engineering'] = keywords['software engineering'] + keywords['software development']
-    del keywords['software engineering']
-    del keywords['software development']
+    # using the groups identified earlier, collate the counts and remove the individuals
+    for grouped_line in groups:
+        group_name = grouped_line.split(',')[0] + ' (group)'
+        keywords[group_name] = 0
+        for grouped_keyphrase in grouped_line.split(','):
+            keywords[group_name] += keywords[grouped_keyphrase]
+            del keywords[grouped_keyphrase]
 
     return keywords
 
