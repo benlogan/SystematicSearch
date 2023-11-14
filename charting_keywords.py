@@ -49,7 +49,7 @@ def chart_keywords(data, plt):
 # FIXME would be good if I didn't have to list these manually!
 # OpenAI/Azure - 1st experiment wasn't successful (key phrase extraction)
 def extract_keyphrases(data):
-    keywords = {}
+    keyphrases = {}
     groups = []
 
     with open('data/words/phrases.txt', 'r') as file:
@@ -58,33 +58,30 @@ def extract_keyphrases(data):
             line = line.strip()
             if ',' in line:
                 groups.append(line)
-                # we still process them seperately, but group later...
-                for grouped_keyphrase in line.split(','):
-                    keywords[grouped_keyphrase] = 0
+                group_name = line.split(',')[0] + ' (*)'
+                keyphrases[group_name] = 0
             else:
-                keywords[line] = 0
+                keyphrases[line] = 0
             line = file.readline()
 
-    for entry in data.entries:
+    for entry in data:
         if FIELD_TITLE in entry.fields_dict:
             title = entry.fields_dict[FIELD_TITLE].value.casefold()
-            for keyphrase in keywords:
+            for keyphrase in keyphrases:
                 if keyphrase in title:
-                    keywords[keyphrase] += 1
+                    keyphrases[keyphrase] += 1
+            for grouped_line in groups:
+                group_name = grouped_line.split(',')[0] + ' (*)'
+                for grouped_keyphrase in grouped_line.split(','):
+                    if grouped_keyphrase in title:
+                        keyphrases[group_name] += 1
+                        break # must avoid double counting here - break out once you've found one match in a group
 
-    # using the groups identified earlier, collate the counts and remove the individuals
-    for grouped_line in groups:
-        group_name = grouped_line.split(',')[0] + ' (*)'
-        keywords[group_name] = 0
-        for grouped_keyphrase in grouped_line.split(','):
-            keywords[group_name] += keywords[grouped_keyphrase]
-            del keywords[grouped_keyphrase]
-
-    return keywords
+    return keyphrases
 
 def chart_keyphrases(data, plt):
 
-    keywords = extract_keyphrases(data)
+    keywords = extract_keyphrases(data.entries)
 
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 

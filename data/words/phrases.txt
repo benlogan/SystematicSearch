@@ -8,7 +8,7 @@ machine learning,deep learning,data science,artificial intelligence
 green it
 high performance,high-performance
 green computing
-cloud computing
+cloud,cloud computing
 task scheduling,job scheduling,resource allocation,resource scheduling,resource optimization
 literature review
 mapping study
