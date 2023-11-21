@@ -1,9 +1,9 @@
-from datetime import time
+import time
 
 import matplotlib.pyplot as plt
 
 from charting import *
-from charting_keywords import chart_keywords, chart_keyphrases
+from charting_keywords import chart_keywords, chart_actual_keywords, chart_keyphrases
 from parser import parse_file, save_file, create_new_lib
 from utility import consolidate_files, find_duplicates
 
@@ -116,8 +116,16 @@ def voting():
 if __name__ == '__main__':
     #process_raw_data()
 
+    #consolidated_filename = 'data/output/consolidated_all_' + str(time.time()) + '.bib'
+    #consolidate_files("data/input/search/v3/", consolidated_filename)
+    #consolidate_files("data/output/", consolidated_filename)
+
     # assuming you have some post-processed data, ready for analysis...
-    data = parse_file('data/output/cleaned_dblp_1699356918.509705.bib')
+    #data = parse_file('data/output/cleaned_dblp_1700557848.872979.bib')
+    #data = parse_file('data/output/cleaned_acm_1700566901.6334422.bib')
+    #data = parse_file('data/output/cleaned_ieee_1700571488.969132.bib')
+    #data = parse_file('data/output/cleaned_sd_1700575595.28679.bib')
+    data = parse_file('data/output/cleaned_all_1700576716.205068.bib')
 
     # let's do some visualisation/analysis!
     #chart_publications(data, plt)
@@ -130,7 +138,11 @@ if __name__ == '__main__':
 
     # keyword cloud? or table to start
     #chart_keywords(data, plt)
-    chart_keyphrases(data, plt)
+    #chart_actual_keywords(data, plt)
+    #chart_keyphrases(data, plt)
+
+    # publication type
+    chart_types(data, plt)
 
     # FIXME - plot them all together, or at the same time in different windows
     # (useful to be able to save them individually)

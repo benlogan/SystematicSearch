@@ -63,7 +63,11 @@ def reapply_search(data, search_query, debug):
     return search_results
 
 # take a consolidated data file, that you will search across
-input_data = parse_file('data/output/consolidated_dblp_1698748522.405845.bib')
+#input_data = parse_file('data/output/consolidated_dblp_1698748522.405845.bib')
+#input_data = parse_file('data/input/search/v3/acm.bib')
+#input_data = parse_file('data/output/consolidated_ieee_1700571258.360456.bib')
+#input_data = parse_file('data/output/consolidated_sd_1700575505.5411599.bib')
+input_data = parse_file('data/output/consolidated_all_1700575903.58812.bib')
 
 # apply the search on that data and retrieve the results (matches)
 results = reapply_search(input_data.entries, SEARCH_STRING, False)
@@ -79,5 +83,9 @@ results = remove_proceedings(results)
 lib = create_new_lib(results)
 
 # export your post processed data (a new file)
-cleaned_filename = 'data/output/cleaned_dblp_' + str(time.time()) + '.bib'
+#cleaned_filename = 'data/output/cleaned_dblp_' + str(time.time()) + '.bib'
+#cleaned_filename = 'data/output/cleaned_acm_' + str(time.time()) + '.bib'
+#cleaned_filename = 'data/output/cleaned_ieee_' + str(time.time()) + '.bib'
+#cleaned_filename = 'data/output/cleaned_sd_' + str(time.time()) + '.bib'
+cleaned_filename = 'data/output/cleaned_all_' + str(time.time()) + '.bib'
 save_file(lib, cleaned_filename)
