@@ -32,7 +32,7 @@ def add_labels_h(plt, x, y, total):
 def top_x(sorted_list, x):
     top_x_list = []
     count = 0
-    while count < x:
+    while count < x and count < len(sorted_list):
         top_x_list.append(sorted_list[(len(sorted_list) - 1) - count])
         count += 1
 
