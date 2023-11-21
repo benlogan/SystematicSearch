@@ -1,4 +1,4 @@
-from charting import FIELD_TITLE, top_x, CHART_COLOUR, add_labels_h
+from charting import FIELD_TITLE, FIELD_KEYWORDS, top_x, CHART_COLOUR, add_labels_h
 
 # FIXME try a word cloud;
 # https://amueller.github.io/word_cloud/index.html
@@ -6,8 +6,8 @@ from charting import FIELD_TITLE, top_x, CHART_COLOUR, add_labels_h
 def chart_keywords(data, plt):
     keywords = {}
     for entry in data.entries:
-        #if FIELD_KEYWORDS in entry.fields_dict:
-        # keywords not populated for DBLP, look at titles instead (probably more accurate anyway)
+        # keywords not populated for some data sources (e.g. DBLP)
+        # look at titles instead (perhaps more accurate anyway?)
         if FIELD_TITLE in entry.fields_dict:
             #result = entry.fields_dict[FIELD_TITLE].value.split(',')
             result = entry.fields_dict[FIELD_TITLE].value.casefold().split()
@@ -24,7 +24,8 @@ def chart_keywords(data, plt):
     with open('data/words/common_words.txt', 'r') as file:
         line = file.readline()
         while line:
-            keywords.pop(line.strip()) # strip() removes the newline character at the end
+            if line.strip() in keywords:
+                keywords.pop(line.strip()) # strip() removes the newline character at the end
             line = file.readline()
 
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
@@ -39,6 +40,37 @@ def chart_keywords(data, plt):
         plt.yticks([])
         plt.barh(x, y, color=CHART_COLOUR)
         plt.title("Green IT Keywords")
+        plt.ylabel("Keyword")
+        plt.xlabel("Publication Count")
+        plt.show()
+    else:
+        print('No Keywords Found!')
+
+def chart_actual_keywords(data, plt):
+    keywords = {}
+    for entry in data.entries:
+        if FIELD_KEYWORDS in entry.fields_dict:
+            result = entry.fields_dict[FIELD_KEYWORDS].value.casefold().split(',')
+            # simply count the occurrences of all keywords
+            for keyword_individual in result:
+                cleaned_keyword = keyword_individual.strip()
+                if cleaned_keyword in keywords:
+                    keywords[cleaned_keyword] += 1
+                else:
+                    keywords[cleaned_keyword] = 1
+
+    sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
+
+    if len(sorted_keywords_list) > 0:
+        top_keywords_dict = top_x(sorted_keywords_list,30)
+
+        x = list(top_keywords_dict.keys())
+        y = list(top_keywords_dict.values())
+
+        add_labels_h(plt, x, y, len(data.entries))
+        plt.yticks([])
+        plt.barh(x, y, color=CHART_COLOUR)
+        plt.title("Green IT Actual Keywords")
         plt.ylabel("Keyword")
         plt.xlabel("Publication Count")
         plt.show()
