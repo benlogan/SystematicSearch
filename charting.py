@@ -92,8 +92,22 @@ def chart_authors(data, plt):
         if FIELD_AUTHOR in entry.fields_dict:
             author_string = entry.fields_dict[FIELD_AUTHOR].value
             result = re.split(r'\s+and\s+', author_string)
+
+            #FIXME some need to split on 'and'
+
             # simply count the occurrences of all names
             for author_individual in result:
+                if author_individual == '':
+                    # ignore (skip) blanks!
+                    continue
+
+                # deal with the fact that some names are formatted differently
+                if ',' in author_individual:
+                    split_name = author_individual.split(',')
+                    second_name = split_name[0]
+                    first_name = split_name[1]
+                    author_individual = first_name.strip() + ' ' + second_name.strip()
+
                 if author_individual in authors:
                     authors[author_individual] += 1
                 else:
