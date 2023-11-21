@@ -39,10 +39,9 @@ def chart_keywords(data, plt):
         add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
         plt.barh(x, y, color=CHART_COLOUR)
-        plt.title("Green IT Keywords")
+        plt.title("Green IT - Keywords")
         plt.ylabel("Keyword")
         plt.xlabel("Publication Count")
-        plt.show()
     else:
         print('No Keywords Found!')
 
@@ -70,10 +69,9 @@ def chart_actual_keywords(data, plt):
         add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
         plt.barh(x, y, color=CHART_COLOUR)
-        plt.title("Green IT Actual Keywords")
+        plt.title("Green IT - Actual Keywords")
         plt.ylabel("Keyword")
         plt.xlabel("Publication Count")
-        plt.show()
     else:
         print('No Keywords Found!')
 
@@ -126,9 +124,8 @@ def chart_keyphrases(data, plt):
         add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
         plt.barh(x, y, color=CHART_COLOUR)
-        plt.title("Green IT Key Phrases")
+        plt.title("Green IT - Key Phrases")
         plt.ylabel("Key Phrase")
         plt.xlabel("Publication Count")
-        plt.show()
     else:
         print('No Key Phrases Found!')

@@ -127,24 +127,29 @@ if __name__ == '__main__':
     #data = parse_file('data/output/cleaned_sd_1700575595.28679.bib')
     data = parse_file('data/output/cleaned_all_1700576716.205068.bib')
 
-    # let's do some visualisation/analysis!
-    #chart_publications(data, plt)
+    # charting...
 
-    # popular journals
-    #chart_journals(data, plt)
+    plt.figure(1, figsize=(6,5))
+    chart_publications(data, plt)
 
-    # popular authors (e.g. Lago)
-    #chart_authors(data, plt)
+    plt.figure(2, figsize=(6,5))
+    chart_journals(data, plt)
 
-    # keyword cloud? or table to start
-    #chart_keywords(data, plt)
-    #chart_actual_keywords(data, plt)
-    #chart_keyphrases(data, plt)
+    plt.figure(3, figsize=(6,5))
+    chart_authors(data, plt)
 
-    # publication type
+    plt.figure(4, figsize=(6,5))
     chart_types(data, plt)
 
-    # FIXME - plot them all together, or at the same time in different windows
-    # (useful to be able to save them individually)
+    plt.figure(5, figsize=(6,10))
+    chart_keywords(data, plt)
+
+    plt.figure(6, figsize=(6,10))
+    chart_actual_keywords(data, plt)
+
+    plt.figure(7, figsize=(6,10))
+    chart_keyphrases(data, plt)
+
+    plt.show()
 
     #reapply_search(parsed_voted_data)

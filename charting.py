@@ -57,10 +57,9 @@ def chart_publications(data, plt):
     sorted_years_dict.pop(datetime.date(2024, 1, 1), None)  # won't error if it doesn't exist
 
     plt.plot(list(sorted_years_dict.keys()), list(sorted_years_dict.values()), color=CHART_COLOUR)
-    plt.title("Green IT Publications")
+    plt.title("Green IT - Publications Over Time")
     plt.xlabel("Publication Year")
     plt.ylabel("Publication Count")
-    plt.show()
 
 def chart_journals(data, plt):
     journals_dict = {}
@@ -80,18 +79,14 @@ def chart_journals(data, plt):
     y = list(top10_journals_dict.values())
 
     add_labels_h(plt, x, y, len(data.entries))
-    # plt.xticks(rotation=90)
+    plt.xticks(rotation=90)
     plt.yticks([])
     plt.barh(x, y, color=CHART_COLOUR)
-    plt.title("Green IT Journals")
+    plt.title("Green IT - Popular Journals")
     plt.ylabel("Journal")
     plt.xlabel("Publication Count")
-    plt.show()
 
 def chart_authors(data, plt):
-    fig = plt.figure()
-    ax = fig.add_subplot()
-
     authors = {}
     for entry in data.entries:
         if FIELD_AUTHOR in entry.fields_dict:
@@ -114,15 +109,11 @@ def chart_authors(data, plt):
     add_labels(plt, x, y)
     plt.xticks([])
     plt.bar(x, y, color=CHART_COLOUR)
-    plt.title("Green IT Authors")
+    plt.title("Green IT - Authors")
     plt.xlabel("Author")
     plt.ylabel("Publication Count")
-    plt.show()
 
 def chart_types(data, plt):
-    fig = plt.figure()
-    ax = fig.add_subplot()
-
     types = {}
     for entry in data.entries:
         type = entry.entry_type
@@ -141,7 +132,6 @@ def chart_types(data, plt):
     add_labels(plt, x, y)
     plt.xticks([])
     plt.bar(x, y, color=CHART_COLOUR)
-    plt.title("Green IT Publication Types")
+    plt.title("Green IT - Publication Types")
     plt.xlabel("Type")
     plt.ylabel("Publication Count")
-    plt.show()
