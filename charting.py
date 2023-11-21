@@ -79,7 +79,7 @@ def chart_journals(data, plt):
     x = list(top10_journals_dict.keys())
     y = list(top10_journals_dict.values())
 
-    add_labels_h(plt, x, y)
+    add_labels_h(plt, x, y, len(data.entries))
     # plt.xticks(rotation=90)
     plt.yticks([])
     plt.barh(x, y, color=CHART_COLOUR)

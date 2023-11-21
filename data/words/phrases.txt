@@ -9,9 +9,13 @@ green computing
 cloud,cloud computing
 task scheduling,job scheduling,resource allocation,resource scheduling,resource optimization,scheduling
 literature review,mapping study
-survey, measuring
+survey, measuring, behaviour, behavior
 modeling, simulation
 energy efficient, energy efficiency, energy-efficient
 energy saving, energy-saving
 energy-aware
 energy conservation
+school, education, teaching
+corporate, enterprise, business
+internet, web
+hardware, infrastructure

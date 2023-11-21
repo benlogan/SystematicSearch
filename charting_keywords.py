@@ -30,12 +30,12 @@ def chart_keywords(data, plt):
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
     if len(sorted_keywords_list) > 0:
-        top_keywords_dict = top_x(sorted_keywords_list,40)
+        top_keywords_dict = top_x(sorted_keywords_list,30)
 
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
 
-        add_labels_h(plt, x, y)
+        add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
         plt.barh(x, y, color=CHART_COLOUR)
         plt.title("Green IT Keywords")
@@ -86,7 +86,7 @@ def chart_keyphrases(data, plt):
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
     if len(sorted_keywords_list) > 0:
-        top_keywords_dict = top_x(sorted_keywords_list,15)
+        top_keywords_dict = top_x(sorted_keywords_list,20)
 
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
