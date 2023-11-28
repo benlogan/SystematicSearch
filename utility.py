@@ -4,7 +4,7 @@ from difflib import SequenceMatcher
 
 
 def consolidate_files(path, output):
-    read_files = glob.glob(path + "*.bib")
+    read_files = glob.glob(path + "cleaned*.bib")
     print('Consolidating ' + str(len(read_files)) + ' .bib files')
 
     with open(output, "wb") as outfile:
@@ -13,7 +13,6 @@ def consolidate_files(path, output):
                 outfile.write(infile.read())
 
 # FIXME not catching;
-
 # Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities
 # Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities. (Dynamic semantic-based green bio-inspired approach for optimizing energy and cloud services qualities)
 # would be caught by dropping phd thesis
@@ -29,11 +28,15 @@ def find_duplicates(search_lib):
     # this might be a little aggressive - it's finding a few more than bibdesk - check later (FIXME)
     # also not dealing properly with 'emph{'
     title_duplicate_count = 0
-    #for entry in search_lib.entries: #FIXME other use needs correcting
     for entry in search_lib:
         title = entry.fields_dict['title'].value.casefold()
-        title = title.replace('{', '').replace('}', '')
+        #title = title.replace('{', '').replace('}', '')
+        title = re.sub('\{.*?\}', '', title)
+        # FIXME can contain formatting in-between, so need to remove what's inside the braces too!
         title = title.replace('-', ' ')
+        title = title.replace('\'', ' ')
+        title = title.replace('/', '')
+        title = title.replace('‘', ' ')
         title = title.replace(':', '')
         title = title.replace(',', '')
         title = title.replace('\n', '')
@@ -53,8 +56,6 @@ def find_duplicates(search_lib):
                 #print('similar!? ' + str(ratio))
                 #print('title')
                 #print(title)
-                #print('compare title')
-                #print(compare_title)
                 #print('*********************')
                 similar_title = True
 
