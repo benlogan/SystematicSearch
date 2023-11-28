@@ -61,3 +61,5 @@ solar
 smart homes
 urban
 campus
+point cloud
+point-cloud
