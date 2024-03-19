@@ -1,4 +1,4 @@
-from charting import FIELD_TITLE, FIELD_KEYWORDS, top_x, CHART_COLOUR, add_labels_h
+import charting
 
 # FIXME try a word cloud;
 # https://amueller.github.io/word_cloud/index.html
@@ -8,9 +8,9 @@ def chart_keywords(data, plt):
     for entry in data.entries:
         # keywords not populated for some data sources (e.g. DBLP)
         # look at titles instead (perhaps more accurate anyway?)
-        if FIELD_TITLE in entry.fields_dict:
+        if charting.FIELD_TITLE in entry.fields_dict:
             #result = entry.fields_dict[FIELD_TITLE].value.split(',')
-            result = entry.fields_dict[FIELD_TITLE].value.casefold().split()
+            result = entry.fields_dict[charting.FIELD_TITLE].value.casefold().split()
             # simply count the occurrences of all keywords
             for keyword_individual in result:
                 cleaned_keyword = keyword_individual.lower().strip()
@@ -31,14 +31,14 @@ def chart_keywords(data, plt):
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
     if len(sorted_keywords_list) > 0:
-        top_keywords_dict = top_x(sorted_keywords_list,30)
+        top_keywords_dict = charting.top_x(sorted_keywords_list,30)
 
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
 
-        add_labels_h(plt, x, y, len(data.entries))
+        charting.add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
-        plt.barh(x, y, color=CHART_COLOUR)
+        plt.barh(x, y, color=charting.CHART_COLOUR)
         plt.title("Green IT - Keywords")
         plt.ylabel("Keyword")
         plt.xlabel("Publication Count")
@@ -48,8 +48,8 @@ def chart_keywords(data, plt):
 def chart_actual_keywords(data, plt):
     keywords = {}
     for entry in data.entries:
-        if FIELD_KEYWORDS in entry.fields_dict:
-            result = entry.fields_dict[FIELD_KEYWORDS].value.casefold().split(',')
+        if charting.FIELD_KEYWORDS in entry.fields_dict:
+            result = entry.fields_dict[charting.FIELD_KEYWORDS].value.casefold().split(',')
             # simply count the occurrences of all keywords
             for keyword_individual in result:
                 cleaned_keyword = keyword_individual.strip()
@@ -61,14 +61,14 @@ def chart_actual_keywords(data, plt):
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
     if len(sorted_keywords_list) > 0:
-        top_keywords_dict = top_x(sorted_keywords_list,30)
+        top_keywords_dict = charting.top_x(sorted_keywords_list,30)
 
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
 
-        add_labels_h(plt, x, y, len(data.entries))
+        charting.add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
-        plt.barh(x, y, color=CHART_COLOUR)
+        plt.barh(x, y, color=charting.CHART_COLOUR)
         plt.title("Green IT - Actual Keywords")
         plt.ylabel("Keyword")
         plt.xlabel("Publication Count")
@@ -95,8 +95,8 @@ def extract_keyphrases(data):
             line = file.readline()
 
     for entry in data:
-        if FIELD_TITLE in entry.fields_dict:
-            title = entry.fields_dict[FIELD_TITLE].value.casefold()
+        if charting.FIELD_TITLE in entry.fields_dict:
+            title = entry.fields_dict[charting.FIELD_TITLE].value.casefold()
             for keyphrase in keyphrases:
                 if keyphrase in title:
                     keyphrases[keyphrase] += 1
@@ -116,14 +116,14 @@ def chart_keyphrases(data, plt):
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
     if len(sorted_keywords_list) > 0:
-        top_keywords_dict = top_x(sorted_keywords_list,20)
+        top_keywords_dict = charting.top_x(sorted_keywords_list,20)
 
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
 
-        add_labels_h(plt, x, y, len(data.entries))
+        charting.add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
-        plt.barh(x, y, color=CHART_COLOUR)
+        plt.barh(x, y, color=charting.CHART_COLOUR)
         plt.title("Green IT - Key Phrases")
         plt.ylabel("Key Phrase")
         plt.xlabel("Publication Count")

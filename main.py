@@ -1,9 +1,6 @@
 import time
+import re
 
-import matplotlib.pyplot as plt
-
-from charting import *
-from charting_keywords import chart_keywords, chart_actual_keywords, chart_keyphrases
 from parser import parse_file, save_file, create_new_lib
 from utility import consolidate_files, find_duplicates
 
@@ -125,31 +122,8 @@ if __name__ == '__main__':
     #data = parse_file('data/output/cleaned_acm_1700566901.6334422.bib')
     #data = parse_file('data/output/cleaned_ieee_1700571488.969132.bib')
     #data = parse_file('data/output/cleaned_sd_1700575595.28679.bib')
+
+    # was being used for charting, but I've moved that code out
     data = parse_file('data/output/cleaned_all_1700576716.205068.bib')
-
-    # charting...
-
-    plt.figure(1, figsize=(6,5))
-    chart_publications(data, plt)
-
-    plt.figure(2, figsize=(6,5))
-    chart_journals(data, plt)
-
-    plt.figure(3, figsize=(6,5))
-    chart_authors(data, plt)
-
-    plt.figure(4, figsize=(6,5))
-    chart_types(data, plt)
-
-    plt.figure(5, figsize=(6,10))
-    chart_keywords(data, plt)
-
-    plt.figure(6, figsize=(6,10))
-    chart_actual_keywords(data, plt)
-
-    plt.figure(7, figsize=(6,10))
-    chart_keyphrases(data, plt)
-
-    plt.show()
 
     #reapply_search(parsed_voted_data)

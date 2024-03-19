@@ -1,7 +1,10 @@
 import datetime
 import re
+import matplotlib.pyplot as plt
+import charting_keywords
 
 from operator import itemgetter
+from parser import parse_file
 
 CHART_COLOUR = 'g'
 FIELD_YEAR = 'year'
@@ -147,3 +150,32 @@ def chart_types(data, plt):
     plt.title("Green IT - Publication Types")
     plt.xlabel("Type")
     plt.ylabel("Publication Count")
+
+if __name__ == '__main__':
+    data = parse_file('data/output/cleaned_all_1700576716.205068.bib')
+    # FIXME - I don't think our latest charts are using our latest/greatest data!
+
+    # charting...
+
+    plt.figure(1, figsize=(6,5))
+    chart_publications(data, plt)
+
+    plt.figure(2, figsize=(6,5))
+    chart_journals(data, plt)
+
+    plt.figure(3, figsize=(6,5))
+    chart_authors(data, plt)
+
+    plt.figure(4, figsize=(6,5))
+    chart_types(data, plt)
+
+    plt.figure(5, figsize=(6,10))
+    charting_keywords.chart_keywords(data, plt)
+
+    plt.figure(6, figsize=(6,10))
+    charting_keywords.chart_actual_keywords(data, plt)
+
+    plt.figure(7, figsize=(6,10))
+    charting_keywords.chart_keyphrases(data, plt)
+
+    plt.show()
