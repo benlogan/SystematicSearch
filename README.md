@@ -80,7 +80,21 @@ This is arguably the most useful and impactful post-processing function. This wi
 
 You can, for example, ensure proper handling of case sensitivity, in your query (something rarely implemented properly in the search portals).
 
+The search is implemented via regular expression pattern matching. The query is rather complex.
+
+search.py is the relevant file, containing the reapply_search function
+
 *Exclusion Criteria*
+
+This uses a list of words (data/words/exclusions.txt) to build a search query. That query is then executed using the same code as above and any positive matches are removed from the results.
+
+*Removing Duplicates*
+
+The utility.py function, find_duplicates, will iterate through the publications and look for a close match, based on title.
+
+It is a relatively slow process and the algorithm could be improved.
+
+You can tune the ratio (sensitivity) used by the sequence matcher, as you see fit. This will impact performance (and the number of duplicates identified, obviously).
 
 ### 4. Charting (visualising results)
 
