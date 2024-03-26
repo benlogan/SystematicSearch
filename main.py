@@ -47,9 +47,6 @@ def voting():
 if __name__ == '__main__':
     # assuming you have some post-processed data, ready for analysis...
     #data = parse_file('data/output/cleaned_dblp_1700557848.872979.bib')
-    #data = parse_file('data/output/cleaned_acm_1700566901.6334422.bib')
-    #data = parse_file('data/output/cleaned_ieee_1700571488.969132.bib')
-    #data = parse_file('data/output/cleaned_sd_1700575595.28679.bib')
 
     # was being used for charting, but I've moved that code out
     data = parse_file('data/output/cleaned_all_1700576716.205068.bib')

@@ -72,7 +72,15 @@ is a standalone executable Python application that will;
 <li>return a new output file, with the following naming convention;</li>
 </ol>
 
-data/output/cleaned_*_timestamp.bib
+data/output/cleaned_timestamp.bib
+
+*Reapplying Search*
+
+This is arguably the most useful and impactful post-processing function. This will execute the query a second time, in code. This helps to clean the results and accounts for various problems with certain database searches. It helps you guarantee that the intended search query has actually been applied to the dataset.
+
+You can, for example, ensure proper handling of case sensitivity, in your query (something rarely implemented properly in the search portals).
+
+*Exclusion Criteria*
 
 ### 4. Charting (visualising results)
 
