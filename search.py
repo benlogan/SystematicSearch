@@ -6,9 +6,8 @@ FIELD_TITLE = 'title'
 # original search query;
 # (sustainab* OR green OR energy) AND (software OR "IT" OR computing OR cloud)
 
-#SEARCH_STRING = r'(?=.*(sustainab\w*|green|energy))(?=.*(software|\bIT\b|computing|cloud))'
-# adding case insensitivity for everything other than IT!
-SEARCH_STRING = r'(?i)(?=.*(sustainab\w*|green|energy))(?=(?i:.*(?!(?i:\bIT\b))(software|\bIT\b|computing|cloud)))'
+SEARCH_STRING = r'\b(?:sustainab\w*|green|energy)\b.*?\b(?:software|(?-i:\bIT\b)\b|computing|cloud)|\b(?:software|(?-i:\bIT\b)\b|computing|cloud)\b.*?\b(?:sustainab\w*|green|energy)'
+# note - use python IGNORE_CASE for case insensitivity, but protect 'IT' in the pattern itself!
 
 #FIXME this is broken. e.g. 'Managing Green IT' being dropped
 
@@ -24,7 +23,8 @@ def reapply_search(data, search_query, debug):
             # should really remove the whitespace, though this doesn't break the regex matching
             title_string = re.sub('\s+', ' ', title_string)
 
-            matches = re.findall(search_query, title_string) # re.IGNORECASE (case sensitivity is handled in the expression)
+            regex = re.compile(search_query, re.IGNORECASE) # had tried solving case sensitivity in the pattern, but it's quite complicated!
+            matches = regex.findall(title_string)
 
             if not matches:
                 if debug:
