@@ -17,7 +17,7 @@ input_data = parse_file('data/output/deduped_26_03_2024_11_44_09.bib')
 results = reapply_search(input_data.entries, SEARCH_STRING, False)
 
 # exclusion criteria...
-#results = reapply_search(results, SEARCH_EXCLUDE, False)
+results = reapply_search(results, SEARCH_EXCLUDE, False)
 
 # you may have already executed this on the raw data (toggle)
 # if you have, this is a waste of time (and it's quite resource intensive)
