@@ -28,27 +28,31 @@ def analysis():
 
 
 def voting(data):
-    # we could do the voting here? (pop up with Y/N - could be rapid)
 
-    # with voting in bibdesk, using the 'read' checkbox to indicate voted in...
     vote_data = []
 
-    #parsed_voted_data = parse_file('data/output/deduped_1696368991.44827_voting.bib')
+    breakout = False
     for entry in data.entries:
-        print(entry.fields_dict['title'].value)
+        if not breakout and 'vote' not in entry.fields_dict:
+            print(entry.fields_dict['title'].value)
 
-        keep = input("Vote Out? hit X :")
+            keep = input("Vote Out? hit X :")
 
-        if keep == 'X' or keep == 'x':
-            print('VOTING OUT')
-            # let's add a new field (we need to create a new Entry object)
-            # Create an Entry object using the dictionary
             fields_list = entry.fields
-            fields_list.append(Field('vote', 'OUT'))
-        if keep == 'q':
-            break
-        # i.e. you can just single-press enter to skip through quickly!
+            value = 'IN'
 
+            if keep == 'X' or keep == 'x':
+                print('VOTING OUT')
+                # let's add a new field...
+                value = 'OUT'
+
+            fields_list.append(Field('vote', value))
+
+            if keep == 'q':
+                breakout = True
+            # i.e. you can just single-press enter to skip through quickly!
+
+        # always append all - so you always output a complete dataset
         vote_data.append(entry)
 
     lib = create_new_lib(vote_data)
@@ -57,12 +61,14 @@ def voting(data):
     filename = 'data/output/voted_' + timestamp + '.bib'
     save_file(lib, filename)
 
+
 if __name__ == '__main__':
     # assuming you have some post-processed data, ready for analysis...
     # legacy main function - most code has since been split out
     # and individual stages of the pipeline can be executed independently
 
     # testing rapid manual exclusions (AKA voting in)
-    data = parse_file('data/output/cleaned_26_03_2024_15_09_14.bib')
+    #data = parse_file('data/output/cleaned_26_03_2024_15_09_14.bib')
+    data = parse_file('data/output/voted_26_03_2024_19_17_50.bib')
 
     voting(data)
