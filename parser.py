@@ -7,11 +7,11 @@ def parse_file(filename):
 
     parsed_lib = bibtexparser.parse_file(filename)
 
-    print('(' + filename + ') entries : ' + str(len(parsed_lib.entries)))
+    print('parse_file(' + filename + ') : count = ' + str(len(parsed_lib.entries)))
     if len(parsed_lib.failed_blocks) > 0:
-        print("Some blocks failed to parse. Check the entries of `library.failed_blocks`.")
+        print("some blocks failed to parse. check the entries of `library.failed_blocks`.")
     else:
-        print("All blocks parsed successfully")
+        print("all blocks parsed successfully")
 
     return parsed_lib
 

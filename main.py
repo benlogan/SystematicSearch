@@ -1,42 +1,7 @@
 import time
-import re
 
 from parser import parse_file, save_file, create_new_lib
-from utility import consolidate_files, find_duplicates
 
-
-def count_records(filename):
-    num_articles = 0
-    num_proceedings = 0
-    num_thesis = 0
-    num_book = 0
-    num_collection = 0
-
-    with open(filename, 'r') as f:
-        for line in f:
-            #if line.find('article') > 0: #707
-            if re.search("@article", line) or\
-                re.search("@ARTICLE", line):
-                num_articles += 1
-            if re.search("@proceedings", line) or\
-                    re.search("@inproceedings", line) or\
-                    re.search("@INPROCEEDINGS", line):
-                num_proceedings += 1
-            if re.search("@phdthesis", line):
-                num_thesis += 1
-            if re.search("@inbook", line) or \
-                    re.search("@INBOOK", line) or \
-                    re.search("@book", line):
-                num_book += 1
-            if re.search("@incollection", line):
-                num_collection += 1
-
-    #print('articles : ' + str(num_articles))
-    #print('proceedings : ' + str(num_proceedings))
-    #print('thesis : ' + str(num_thesis))
-    #print('book : ' + str(num_book))
-    #print('collection : ' + str(num_collection))
-    print('Manual Entry Count : ' + str(num_articles + num_proceedings + num_thesis + num_book + num_collection))
 
 def analysis():
     # FIXME this code is now broken and needs fixing, to run the gap analysis properly
@@ -60,37 +25,6 @@ def analysis():
     # (while ensuring the search results themselves don't go through the roof with false positives)
     print('NEED TO ADJUST SEARCH TO FIND MORE DOCS : ' + str(not_in_search))
 
-def process_raw_data():
-
-    consolidated_filename = 'data/output/consolidated_' + str(time.time()) + '.bib'
-
-    consolidate_files("data/input/search/v2/", consolidated_filename)
-
-    # if I want to use a modified or manually cleaned consolidated file;
-    # consolidated_filename = 'data/output/consolidated_cleaned.bib'
-
-    # manual count (read file for certain strings)
-    count_records(consolidated_filename)
-
-    # parse file (process of reading will remove some dupes)
-    processed_lib = parse_file(consolidated_filename)
-
-    # FIXME - add a test to compare the pre-consolidated count with the final total
-    # a manual check via loading the files in bibdesk is quite easy, in the mean time
-
-    # you actually need to remove the failed (dupes) from the main block structure
-    processed_lib.remove(processed_lib.failed_blocks)
-
-    # remove duplicates by title
-    # FIXME this will now remove duplicates and return cleaned data structure
-    #title_duplicates = find_duplicates(processed_lib)
-    #processed_lib.remove(title_duplicates)
-    processed_lib = find_duplicates(processed_lib.entries) # untested code!
-
-    # write the cleaned data back to a file, to facilitate voting in bibdesk?
-    cleaned_filename = 'data/output/deduped_' + str(time.time()) + '.bib'
-    save_file(processed_lib, cleaned_filename)
-
 def voting():
     # moving this code out, not currently using, come back to it later...
 
@@ -111,12 +45,6 @@ def voting():
     save_file(lib, filename)
 
 if __name__ == '__main__':
-    #process_raw_data()
-
-    #consolidated_filename = 'data/output/consolidated_all_' + str(time.time()) + '.bib'
-    #consolidate_files("data/input/search/v3/", consolidated_filename)
-    #consolidate_files("data/output/", consolidated_filename)
-
     # assuming you have some post-processed data, ready for analysis...
     #data = parse_file('data/output/cleaned_dblp_1700557848.872979.bib')
     #data = parse_file('data/output/cleaned_acm_1700566901.6334422.bib')

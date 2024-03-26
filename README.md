@@ -41,7 +41,7 @@ Your search will have been unique to your target research database (e.g. DBLP). 
 
 This is the process for merging datasets from across different data sources. If you have multiple datasets from a single data source, they should have been consolidated before this step.
 
-process_raw_data is the function.
+consolidation.py is an executable python file containing the relevant functions.
 
 This typically results in an output data file (data/output) with the following naming convention;
 data/output/deduped_timestamp.bib
