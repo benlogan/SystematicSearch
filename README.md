@@ -46,6 +46,12 @@ consolidation.py is an executable python file containing the relevant functions.
 This typically results in an output data file (data/output) with the following naming convention;
 data/output/deduped_timestamp.bib
 
+Note that the process of consolidation involves parsing the newly created (consolidated) bib file.
+This parsing identifies any duplicates (based on key) - the saving of this parsed/validated data set results in the removal of those duplicates.
+
+You can also, optionally, plug in the regex pattern matching title de-duplication code, or you can leave that until the post-processing stage.
+(see the section below for more details on the custom de-duplication process)
+
 ### 3. Post Processing
 
 At this stage, you will have cleaned and consolidated data from a number of underlying data sources. You could, at this point, start your data analysis or visualisation.

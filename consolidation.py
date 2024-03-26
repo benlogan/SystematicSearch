@@ -1,6 +1,6 @@
 import time
 
-from parser import parse_file, save_file
+from parser import parse_file, save_file, create_new_lib
 from utility import consolidate_files, find_duplicates, count_records
 
 
@@ -34,13 +34,12 @@ def parse_consolidated_file(filename, timestamp):
         processed_lib.remove(processed_lib.failed_blocks)
 
         # remove duplicates by title
-        # FIXME this will now remove duplicates and return cleaned data structure
-        # title_duplicates = find_duplicates(processed_lib)
-        # processed_lib.remove(title_duplicates)
+        # remove duplicates and return new, cleaned data structure
+        # optional (could be left until post-processing)
+        results = find_duplicates(processed_lib.entries)
+        processed_lib = create_new_lib(results)
 
-        #processed_lib = find_duplicates(processed_lib.entries)  # untested code!
-
-        # write the cleaned data back to a file, to facilitate voting in bibdesk?
+        # write the cleaned data back to a file
         cleaned_filename = 'data/output/deduped_' + timestamp + '.bib'
         save_file(processed_lib, cleaned_filename)
 

@@ -35,7 +35,9 @@ def find_duplicates(search_lib):
     # this might be a little aggressive - it's finding a few more than bibdesk - check later (FIXME)
     # also not dealing properly with 'emph{'
     title_duplicate_count = 0
+    count = 0
     for entry in search_lib:
+        count = count + 1
         title = entry.fields_dict['title'].value.casefold()
         #title = title.replace('{', '').replace('}', '')
         title = re.sub('\{.*?\}', '', title)
@@ -71,10 +73,15 @@ def find_duplicates(search_lib):
             unique.add(title)
             search_results.append(entry)
         else:
-            #print('duplicate title; \n' + title)
+            print('duplicate title; \n' + title)
             title_duplicate_count += 1
+
+        if count % 100 == 0:
+            #print('find_duplicates : processed another 100...')
+            print(str(round((100 / len(search_lib)) * count)) + '% complete')
+
     print('found ' + str(title_duplicate_count) + ' duplicates by Title')
-    print('sorted entries (removing duplicates by Title) : ' + str(len(unique)))
+    print('deduped entries (removing duplicates by Title) : ' + str(len(unique)))
 
     return search_results
 
