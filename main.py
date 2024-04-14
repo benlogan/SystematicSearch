@@ -32,11 +32,19 @@ def voting(data):
     vote_data = []
 
     breakout = False
+    count = 0
     for entry in data.entries:
+        count += 1
         if not breakout and 'vote' not in entry.fields_dict:
+            print('')
+            print('count : ' + str(count) + '/' + str(len(data.entries)))
             print(entry.fields_dict['title'].value)
+            if 'journal' in entry.fields_dict:
+                print(entry.fields_dict['journal'].value)
 
             keep = input("Vote Out? hit X :")
+            # you can single-press enter to skip through quickly!
+            # i.e. you are selectively excluding, not including
 
             fields_list = entry.fields
             value = 'IN'
@@ -46,13 +54,13 @@ def voting(data):
                 # let's add a new field...
                 value = 'OUT'
 
-            fields_list.append(Field('vote', value))
-
             if keep == 'q':
                 breakout = True
-            # i.e. you can just single-press enter to skip through quickly!
+                #break - you can't just break out here, you need to process the full data set
+            else:
+                fields_list.append(Field('vote', value))
 
-        # always append all - so you always output a complete dataset
+        # always append all - so that you always output a complete dataset
         vote_data.append(entry)
 
     lib = create_new_lib(vote_data)
@@ -68,7 +76,6 @@ if __name__ == '__main__':
     # and individual stages of the pipeline can be executed independently
 
     # testing rapid manual exclusions (AKA voting in)
-    #data = parse_file('data/output/cleaned_26_03_2024_15_09_14.bib')
-    data = parse_file('data/output/voted_26_03_2024_19_17_50.bib')
+    data = parse_file('data/output/voted_14_04_2024_21_51_43.bib')
 
     voting(data)
