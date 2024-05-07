@@ -152,10 +152,7 @@ def chart_types(data, plt):
     plt.ylabel("Publication Count")
 
 if __name__ == '__main__':
-    data = parse_file('data/output/cleaned_all_1700576716.205068.bib')
-    # FIXME - I don't think our latest charts are using our latest/greatest data!
-
-    # charting...
+    data = parse_file('data/enrichment/voted_14_04_2024_21_52_28.bib')
 
     plt.figure(1, figsize=(6,5))
     chart_publications(data, plt)
@@ -169,6 +166,7 @@ if __name__ == '__main__':
     plt.figure(4, figsize=(6,5))
     chart_types(data, plt)
 
+    # limited value - may not include in final research...
     plt.figure(5, figsize=(6,10))
     charting_keywords.chart_keywords(data, plt)
 
