@@ -45,11 +45,11 @@ def chart_keywords(data, plt):
     else:
         print('No Keywords Found!')
 
-def chart_actual_keywords(data, plt):
+def chart_actual_keywords(data, plt, field, title):
     keywords = {}
     for entry in data.entries:
-        if charting.FIELD_KEYWORDS in entry.fields_dict:
-            result = entry.fields_dict[charting.FIELD_KEYWORDS].value.casefold().split(',')
+        if field in entry.fields_dict:
+            result = entry.fields_dict[field].value.casefold().split(',')
             # simply count the occurrences of all keywords
             for keyword_individual in result:
                 cleaned_keyword = keyword_individual.strip()
@@ -69,7 +69,7 @@ def chart_actual_keywords(data, plt):
         charting.add_labels_h(plt, x, y, len(data.entries))
         plt.yticks([])
         plt.barh(x, y, color=charting.CHART_COLOUR)
-        plt.title("Green IT - Actual Keywords")
+        plt.title(title)
         plt.ylabel("Keyword")
         plt.xlabel("Publication Count")
     else:

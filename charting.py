@@ -11,6 +11,7 @@ FIELD_YEAR = 'year'
 FIELD_JOURNAL = 'journal'
 FIELD_AUTHOR = 'author'
 FIELD_KEYWORDS = 'keywords'
+FIELD_CATEGORIES = 'categories'
 FIELD_TITLE = 'title'
 CHART_LABEL_OFFSET = 0.02
 
@@ -171,9 +172,12 @@ if __name__ == '__main__':
     charting_keywords.chart_keywords(data, plt)
 
     plt.figure(6, figsize=(6,10))
-    charting_keywords.chart_actual_keywords(data, plt)
+    charting_keywords.chart_actual_keywords(data, plt, FIELD_KEYWORDS, "Green IT - Actual Keywords")
 
     plt.figure(7, figsize=(6,10))
     charting_keywords.chart_keyphrases(data, plt)
+
+    plt.figure(8, figsize=(6, 10))
+    charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES, "Green IT - Categories")
 
     plt.show()
