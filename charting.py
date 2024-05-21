@@ -164,20 +164,18 @@ if __name__ == '__main__':
     plt.figure(3, figsize=(6,5))
     chart_authors(data, plt)
 
-    plt.figure(4, figsize=(6,5))
-    chart_types(data, plt)
-
     # limited value - may not include in final research...
-    plt.figure(5, figsize=(6,10))
-    charting_keywords.chart_keywords(data, plt)
 
-    plt.figure(6, figsize=(6,10))
-    charting_keywords.chart_actual_keywords(data, plt, FIELD_KEYWORDS, "Green IT - Actual Keywords")
+    #plt.figure(4, figsize=(6,5))
+    #chart_types(data, plt)
 
-    plt.figure(7, figsize=(6,10))
-    charting_keywords.chart_keyphrases(data, plt)
+    #plt.figure(4, figsize=(6,10))
+    #charting_keywords.chart_keywords(data, plt)
 
-    plt.figure(8, figsize=(6, 10))
+    plt.figure(4, figsize=(6,10))
+    charting_keywords.chart_actual_keywords(data, plt, FIELD_KEYWORDS, "Green IT - Keywords")
+
+    plt.figure(5, figsize=(6, 10))
     charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES, "Green IT - Categories")
 
     plt.show()

@@ -47,8 +47,11 @@ def chart_keywords(data, plt):
 
 def chart_actual_keywords(data, plt, field, title):
     keywords = {}
+    total = len(data.entries) # default to all
+    total = 0
     for entry in data.entries:
         if field in entry.fields_dict:
+            total = total + 1
             result = entry.fields_dict[field].value.casefold().split(',')
             # simply count the occurrences of all keywords
             for keyword_individual in result:
@@ -61,7 +64,7 @@ def chart_actual_keywords(data, plt, field, title):
     sorted_keywords_list = sorted(keywords.items(), key=lambda item: item[1])
 
     if len(sorted_keywords_list) > 0:
-        top_keywords_dict = charting.top_x(sorted_keywords_list,30)
+        top_keywords_dict = charting.top_x(sorted_keywords_list,14)
 
         # manual chart exclusions (refactor this code)
         if '' in top_keywords_dict:
@@ -74,12 +77,12 @@ def chart_actual_keywords(data, plt, field, title):
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())
 
-        charting.add_labels_h(plt, x, y, len(data.entries))
+        charting.add_labels_h(plt, x, y, total)
         plt.yticks([])
         plt.barh(x, y, color=charting.CHART_COLOUR)
         plt.title(title)
         plt.ylabel("Keyword")
-        plt.xlabel("Publication Count")
+        plt.xlabel("Publication Count (total=" + str(total) + ')')
     else:
         print('No Keywords Found!')
 
@@ -90,7 +93,7 @@ def extract_keyphrases(data):
     keyphrases = {}
     groups = []
 
-    with open('data/words/phrasesNew.txt', 'r') as file:
+    with open('data/words/phrases.txt', 'r') as file:
         line = file.readline()
         while line:
             line = line.strip()
@@ -119,6 +122,8 @@ def extract_keyphrases(data):
 
     return keyphrases
 
+# redundant - this code used to be used to extract key phrases at runtime, during charting
+# categorisation is now done as a post-processing step, earlier in the data pipeline
 def chart_keyphrases(data, plt):
 
     keywords = extract_keyphrases(data.entries)

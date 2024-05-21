@@ -15,7 +15,7 @@ def categorise(data):
     # note this code was originally taken from the keyphrases charting code,
     # but it has since been modified quite significantly
 
-    with open('data/words/phrasesNew.txt', 'r') as file:
+    with open('data/words/phrases.txt', 'r') as file:
         line = file.readline()
         while line:
             line = line.strip()

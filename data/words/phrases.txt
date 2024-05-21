@@ -1,21 +1,16 @@
-virtual machine,virtual machines,VM,VMs,virtualization
-data center,data centre,data centers,data centres,datacentres,datacenters,datacentre,datacenter
-software engineering,software development,software architecture,software sustainability
-big data
-machine learning,deep learning,data science,artificial intelligence
-green it
-high performance,high-performance
-green computing
-cloud,cloud computing
-task scheduling,job scheduling,resource allocation,resource scheduling,resource optimization,scheduling
-literature review,mapping study
-survey, measuring, behaviour, behavior
-modeling, simulation
-energy efficient, energy efficiency, energy-efficient
-energy saving, energy-saving
-energy-aware
-energy conservation
-school, education, teaching
-corporate, enterprise, business, it sector, firm, startup
-internet, web
-hardware, infrastructure
+ENERGY:energy,power,efficient,energy-efficient,energy-saving,energy-aware,energy efficient,energy efficiency,energy consumption,energy saving,energy conservation
+CLOUD:cloud,cloud computing
+ALLOC:resource,allocation,placement,optimization,resource management,resource allocation
+SCHED:scheduling,schedule,task scheduling,job scheduling
+VM:virtual machine,virtual machines,vm,vms,VM,VMs,virtualization
+DC:data center,data centre,data centers,data centres,datacentres,datacenters,datacentre,datacenter,cloud data centers
+ENG:software engineering,software development,software architecture,software sustainability,coding,requirements,green software,software quality,software
+SIM:simulation,sim
+MEAS:measurement,measuring,measure,measures
+ML:machine learning,big data,deep learning,data science,artificial intelligence,AI,ML
+LIT:literature review,mapping study,SLR
+HPC:high performance,high-performance,HPC,PC,parallel
+ENT:corporate,enterprise,business,it sector,firm,startup,company,industry,adoption,professionals,implementation,organisations,organizations,cio,CIO
+SURV:survey,behaviour,behavior
+ACAD:school,education,teaching,university,academia,academic,undergraduate
+GREEN:green computing,sustainable computing,green it,greener it,sustainable it, green {it},green is, green {is}
