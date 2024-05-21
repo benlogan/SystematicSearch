@@ -11,7 +11,7 @@ FIELD_YEAR = 'year'
 FIELD_JOURNAL = 'journal'
 FIELD_AUTHOR = 'author'
 FIELD_KEYWORDS = 'keywords'
-FIELD_CATEGORIES = 'categories'
+FIELD_CATEGORIES = 'Categories_Extracted'
 FIELD_TITLE = 'title'
 CHART_LABEL_OFFSET = 0.02
 
@@ -153,7 +153,7 @@ def chart_types(data, plt):
     plt.ylabel("Publication Count")
 
 if __name__ == '__main__':
-    data = parse_file('data/enrichment/voted_14_04_2024_21_52_28.bib')
+    data = parse_file('data/enrichment/categorised_21_05_2024_12_33_28.bib')
 
     plt.figure(1, figsize=(6,5))
     chart_publications(data, plt)

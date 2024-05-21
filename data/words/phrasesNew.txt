@@ -13,4 +13,4 @@ HPC:high performance,high-performance,HPC,PC,parallel
 ENT:corporate,enterprise,business,it sector,firm,startup,company,industry,adoption,professionals,implementation,organisations,organizations,cio,CIO
 SURV:survey,behaviour,behavior
 ACAD:school,education,teaching,university,academia,academic,undergraduate
-GREEN:green computing,sustainable computing,green IT,greener IT,sustainable IT,
+GREEN:green computing,sustainable computing,green it,greener it,sustainable it, green {it},green is, green {is}
