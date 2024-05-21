@@ -200,7 +200,7 @@ if __name__ == '__main__':
     fig, ax = plt.subplots(1, 1)
     ax.axis("tight")
     ax.axis("off")
-    the_table = ax.table(cellText=df.values, colLabels=df.columns, loc="center", colWidths=[0.15,1])
+    the_table = ax.table(cellText=df.values, colLabels=df.columns, loc="center", colWidths=[0.05,1])
 
     the_table.auto_set_font_size(False)
     the_table.set_fontsize(9)

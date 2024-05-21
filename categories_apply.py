@@ -39,6 +39,7 @@ def categorise(data):
             # add the tags to the data (for persistence back to file later)
             entry.fields.append(Field('Categories_Extracted', tags))
 
+            # certain categories - flag for a more in-depth SLR, later
             matches = ["ENT", "SIM", "MEAS"]
             if any(x in tags for x in matches):
                 entry.fields.append(Field('SLR', 'YES'))
