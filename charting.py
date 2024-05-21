@@ -68,8 +68,10 @@ def chart_publications(data, plt):
 
 def chart_journals(data, plt):
     journals_dict = {}
+    total = 0
     for entry in data.entries:
         if FIELD_JOURNAL in entry.fields_dict:
+            total = total + 1
             journal_string = entry.fields_dict[FIELD_JOURNAL].value.lower().strip()
             if journal_string in journals_dict:
                 journals_dict[journal_string] += 1
@@ -78,12 +80,12 @@ def chart_journals(data, plt):
 
     sorted_journal_list = sorted(journals_dict.items(), key=itemgetter(1))
 
-    top10_journals_dict = top_x(sorted_journal_list, 10)
+    top_journals_dict = top_x(sorted_journal_list, 15)
 
-    x = list(top10_journals_dict.keys())
-    y = list(top10_journals_dict.values())
+    x = list(top_journals_dict.keys())
+    y = list(top_journals_dict.values())
 
-    add_labels_h(plt, x, y, len(data.entries))
+    add_labels_h(plt, x, y, total)
     plt.xticks(rotation=90)
     plt.yticks([])
     plt.barh(x, y, color=CHART_COLOUR)

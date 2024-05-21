@@ -47,7 +47,6 @@ def chart_keywords(data, plt):
 
 def chart_actual_keywords(data, plt, field, title):
     keywords = {}
-    total = len(data.entries) # default to all
     total = 0
     for entry in data.entries:
         if field in entry.fields_dict:
