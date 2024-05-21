@@ -58,5 +58,5 @@ lib = create_new_lib(results)
 
 # export processed data (to a new file)
 timestamp = time.strftime("%d_%m_%Y_%H_%M_%S")
-cleaned_filename = 'data/output/categorised_' + timestamp + '.bib'
+cleaned_filename = 'data/enrichment/categorised_' + timestamp + '.bib'
 save_file(lib, cleaned_filename)

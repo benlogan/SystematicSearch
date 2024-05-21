@@ -82,7 +82,7 @@ def extract_keyphrases(data):
     keyphrases = {}
     groups = []
 
-    with open('data/words/phrases.txt', 'r') as file:
+    with open('data/words/phrasesNew.txt', 'r') as file:
         line = file.readline()
         while line:
             line = line.strip()
@@ -106,6 +106,8 @@ def extract_keyphrases(data):
                     if grouped_keyphrase in title:
                         keyphrases[group_name] += 1
                         break # must avoid double counting here - break out once you've found one match in a group
+            print(title)
+            print(keyphrases) # this is the entire dictionary, each time (not unique for the given title)
 
     return keyphrases
 

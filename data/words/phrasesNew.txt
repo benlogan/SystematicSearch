@@ -10,6 +10,7 @@ MEAS:measurement,measuring,measure,measures
 ML:machine learning,big data,deep learning,data science,artificial intelligence,AI,ML
 LIT:literature review,mapping study,SLR
 HPC:high performance,high-performance,HPC,PC,parallel
-ENT:corporate,enterprise,business,it sector,firm,startup,company,industry,adoption,professionals,implementation,organisations,organizations
+ENT:corporate,enterprise,business,it sector,firm,startup,company,industry,adoption,professionals,implementation,organisations,organizations,cio,CIO
 SURV:survey,behaviour,behavior
 ACAD:school,education,teaching,university,academia,academic,undergraduate
+GREEN:green computing,sustainable computing,green IT,greener IT,sustainable IT,
