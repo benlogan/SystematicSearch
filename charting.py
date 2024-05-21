@@ -2,6 +2,7 @@ import datetime
 import re
 import matplotlib.pyplot as plt
 import charting_keywords
+import pandas as pd
 
 from operator import itemgetter
 from parser import parse_file
@@ -177,5 +178,29 @@ if __name__ == '__main__':
 
     plt.figure(5, figsize=(6, 10))
     charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES, "Green IT - Categories")
+
+    # new data table; categories
+    categories = []
+    keywords = []
+    with open('data/words/phrases.txt', 'r') as file:
+        line = file.readline()
+        while line:
+            line = line.strip()
+
+            categories.append(line.split(':')[0])
+            keywords.append(line.split(':')[1].split(','))
+
+            line = file.readline()
+
+    data = {'Category':categories,'Keywords':keywords}
+    df = pd.DataFrame(data, columns=['Category','Keywords'])
+
+    fig, ax = plt.subplots(1, 1)
+    ax.axis("tight")
+    ax.axis("off")
+    the_table = ax.table(cellText=df.values, colLabels=df.columns, loc="center", colWidths=[0.15,1])
+
+    the_table.auto_set_font_size(False)
+    the_table.set_fontsize(9)
 
     plt.show()
