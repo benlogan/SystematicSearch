@@ -52,7 +52,7 @@ def chart_actual_keywords(data, plt, field, title):
             result = entry.fields_dict[field].value.casefold().split(',')
             # simply count the occurrences of all keywords
             for keyword_individual in result:
-                cleaned_keyword = keyword_individual.strip()
+                cleaned_keyword = keyword_individual.strip().upper()
                 if cleaned_keyword in keywords:
                     keywords[cleaned_keyword] += 1
                 else:
@@ -62,6 +62,14 @@ def chart_actual_keywords(data, plt, field, title):
 
     if len(sorted_keywords_list) > 0:
         top_keywords_dict = charting.top_x(sorted_keywords_list,30)
+
+        # manual chart exclusions (refactor this code)
+        if '' in top_keywords_dict:
+            del top_keywords_dict['']
+        if 'LIT' in top_keywords_dict:
+            del top_keywords_dict['LIT']
+        if 'ACAD' in top_keywords_dict:
+            del top_keywords_dict['ACAD']
 
         x = list(top_keywords_dict.keys())
         y = list(top_keywords_dict.values())

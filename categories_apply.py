@@ -45,9 +45,6 @@ def categorise(data):
 
             new_data.append(entry)
 
-            print(title)
-            print(tags)
-
     return new_data
 
 

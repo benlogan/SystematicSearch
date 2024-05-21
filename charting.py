@@ -153,7 +153,7 @@ def chart_types(data, plt):
     plt.ylabel("Publication Count")
 
 if __name__ == '__main__':
-    data = parse_file('data/enrichment/categorised_21_05_2024_12_33_28.bib')
+    data = parse_file('data/enrichment/categorised_21_05_2024_12_58_09.bib')
 
     plt.figure(1, figsize=(6,5))
     chart_publications(data, plt)
