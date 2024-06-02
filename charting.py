@@ -91,7 +91,7 @@ def chart_journals(data, plt):
     plt.barh(x, y, color=CHART_COLOUR)
     plt.title("Green IT - Popular Journals")
     plt.ylabel("Journal")
-    plt.xlabel("Publication Count")
+    plt.xlabel("Publication Count (total=" + str(total) + ')')
 
 def chart_authors(data, plt):
     authors = {}
@@ -155,8 +155,15 @@ def chart_types(data, plt):
     plt.xlabel("Type")
     plt.ylabel("Publication Count")
 
+def increment_category(year, category):
+    if year in category:
+        category[year] = category[year] + 1
+    else:
+        category[year] = 1
+
 if __name__ == '__main__':
     data = parse_file('data/enrichment/categorised_21_05_2024_12_58_09.bib')
+    #data = parse_file('data/enrichment/slr_edited.bib')
 
     plt.figure(1, figsize=(6,5))
     chart_publications(data, plt)
@@ -194,8 +201,8 @@ if __name__ == '__main__':
 
             line = file.readline()
 
-    data = {'Category':categories,'Keywords':keywords}
-    df = pd.DataFrame(data, columns=['Category','Keywords'])
+    table_data = {'Category':categories,'Keywords':keywords}
+    df = pd.DataFrame(table_data, columns=['Category','Keywords'])
 
     fig, ax = plt.subplots(1, 1)
     ax.axis("tight")
@@ -204,5 +211,73 @@ if __name__ == '__main__':
 
     the_table.auto_set_font_size(False)
     the_table.set_fontsize(9)
+
+    # new chart - categories by date
+    # refactor this code before committing!!
+    # I have the desired output, sort of
+    # needs to be better use of data structures and
+    # output needs to be comma seperated, and line seperated
+    # (to prevent the need for further manipulation and enable direct use in excel)
+    cloud = {}
+    energy = {}
+    alloc = {}
+    vm = {}
+    dc = {}
+    sched = {}
+    surv = {}
+    ml = {}
+    eng = {}
+    green = {}
+    hpc = {}
+    lit = {}
+    ent = {}
+
+    for entry in data.entries:
+        if FIELD_YEAR in entry.fields_dict:
+            year_list = entry.fields_dict[FIELD_YEAR].value.casefold().split()
+            year = year_list[0]
+        if FIELD_CATEGORIES in entry.fields_dict:
+            categories_list = entry.fields_dict[FIELD_CATEGORIES].value.casefold().split()
+            if categories_list and categories_list[0]:
+                categories = categories_list[0]
+                if "cloud" in categories:
+                    increment_category(year, cloud)
+                if "energy" in categories:
+                    increment_category(year, energy)
+                if "alloc" in categories:
+                    increment_category(year, alloc)
+                if "vm" in categories:
+                    increment_category(year, vm)
+                if "dc" in categories:
+                    increment_category(year, dc)
+                if "sched" in categories:
+                    increment_category(year, sched)
+                if "surv" in categories:
+                    increment_category(year, surv)
+                if "ml" in categories:
+                    increment_category(year, ml)
+                if "eng" in categories:
+                    increment_category(year, eng)
+                if "green" in categories:
+                    increment_category(year, green)
+                if "hpc" in categories:
+                    increment_category(year, hpc)
+                if "lit" in categories:
+                    increment_category(year, lit)
+                if "ent" in categories:
+                    increment_category(year, ent)
+    print('cloud: ' + str(sorted(cloud.items())))
+    print('energy: ' + str(sorted(energy.items())))
+    print('alloc: ' + str(sorted(alloc.items())))
+    print('vm: ' + str(sorted(vm.items())))
+    print('dc: ' + str(sorted(dc.items())))
+    print('sched: ' + str(sorted(sched.items())))
+    print('surv: ' + str(sorted(surv.items())))
+    print('ml: ' + str(sorted(ml.items())))
+    print('eng: ' + str(sorted(eng.items())))
+    print('green: ' + str(sorted(green.items())))
+    print('hpc: ' + str(sorted(hpc.items())))
+    print('lit: ' + str(sorted(lit.items())))
+    print('ent: ' + str(sorted(ent.items())))
 
     plt.show()
