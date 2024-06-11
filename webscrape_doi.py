@@ -2,12 +2,14 @@ import time
 
 import requests
 from bs4 import BeautifulSoup
-from parser import parse_file, save_file
+from parser import parse_file, save_file, create_new_lib
 from bibtexparser.model import Field
 
 FIELD_DOI = 'doi'
 FIELD_ABSTRACT = 'abstract'
 FIELD_TITLE = 'title'
+
+# NOT in use (for a better approach, see webscrape_generic)
 
 # DOI - identifier
 
@@ -22,24 +24,27 @@ url = "https://doi.org/"
 # Google Scholar might be better for this (only dealing with a single format)
 url = "https://scholar.google.co.uk/scholar?hl=en&as_sdt=0%2C5&q="
 
-doi = "10.1007/978-3-031-15559-8\_5"
-doi = "10.1007/978-3-031-40843-4\_18"
-doi = "10.5220/0011984700003464"
-doi = "10.1145/2664591.2664609"
+#doi = "10.1007/978-3-031-15559-8\_5"
+#doi = "10.1007/978-3-031-40843-4\_18"
+#doi = "10.5220/0011984700003464"
+#doi = "10.1145/2664591.2664609"
 
 data = parse_file('data/enrichment/slr_edited.bib')
 
-missing_abstracts = 0
+new_abstracts = 0
 
 # isn't making any difference, presumably IP blocked
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
+#headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'}
 
 def scrape_abstract(scrape_url):
     print(scrape_url)
 
+    #proxies = {"http": "http://77.238.235.219:8080",
+    #           "https": "http://77.238.235.219:8080"}
+
     # Send an HTTP GET request to the URL
-    response = requests.get(scrape_url, headers=headers)
+    #response = requests.get(scrape_url, headers=headers, proxies=proxies)
+    response = requests.get(scrape_url)
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -66,6 +71,7 @@ def scrape_abstract(scrape_url):
     else:
         print(f"Failed to retrieve data. Status code: {response.status_code}")
         print(response)
+        return None
 
 
 new_data = []
@@ -80,15 +86,23 @@ for entry in data.entries:
             doi = doi.replace('\\', '')
 
             abstract = scrape_abstract(url + doi)
-            time.sleep(10) # or you will receive 429 response (too many requests), from GS
 
-            entry.fields.append(Field(FIELD_ABSTRACT, abstract))
+            if abstract is not None:
+                entry.fields.append(Field(FIELD_ABSTRACT, abstract))
+                new_abstracts = new_abstracts + 1
+
             new_data.append(entry)
 
-            missing_abstracts = missing_abstracts + 1
+            time.sleep(60)  # or you will receive 429 response (too many requests), from GS
+        else:
+            new_data.append(entry)
+    else:
+        new_data.append(entry)
 
-print(missing_abstracts)
 
+print('Found ' + str(new_abstracts) + ' new abstracts')
+
+lib = create_new_lib(new_data)
 timestamp = time.strftime("%d_%m_%Y_%H_%M_%S")
 cleaned_filename = 'data/enrichment/slr_enriched_' + timestamp + '.bib'
-save_file(new_data, cleaned_filename)
+save_file(lib, cleaned_filename)
