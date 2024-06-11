@@ -42,7 +42,8 @@ for entry in data.entries:
             # Close the StringIO object
             output.close()
 
-            entry.fields.append(Field(FIELD_KEYWORDS, csv_string))
+            # not an append! the field already exists, if you append this will create a duplicate
+            entry.fields_dict[FIELD_KEYWORDS].value = csv_string
 
     new_data.append(entry)
 

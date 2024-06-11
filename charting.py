@@ -161,18 +161,18 @@ def increment_category(year, category):
     else:
         category[year] = 1
 
+
 if __name__ == '__main__':
-    data = parse_file('data/enrichment/categorised_21_05_2024_12_58_09.bib')
-    #data = parse_file('data/enrichment/slr_edited.bib')
+    data = parse_file('data/enrichment/slr_enriched_cleaned_11_06_2024_17_22_22.bib')
 
     plt.figure(1, figsize=(6,5))
     chart_publications(data, plt)
 
-    plt.figure(2, figsize=(6,5))
-    chart_journals(data, plt)
+    #plt.figure(2, figsize=(6,5))
+    #chart_journals(data, plt)
 
-    plt.figure(3, figsize=(6,5))
-    chart_authors(data, plt)
+    #plt.figure(3, figsize=(6,5))
+    #chart_authors(data, plt)
 
     # limited value - may not include in final research...
 
