@@ -45,6 +45,7 @@ def chart_keywords(data, plt):
     else:
         print('No Keywords Found!')
 
+
 def chart_actual_keywords(data, plt, field, title):
     keywords = {}
     total = 0
@@ -85,6 +86,7 @@ def chart_actual_keywords(data, plt, field, title):
     else:
         print('No Keywords Found!')
 
+
 # FIXME join this phrase count to the keyword count (e.g. single word search like 'cloud')
 # FIXME would be good if I didn't have to list these manually!
 # OpenAI/Azure - 1st experiment wasn't successful (key phrase extraction)
@@ -120,6 +122,7 @@ def extract_keyphrases(data):
             print(keyphrases) # this is the entire dictionary, each time (not unique for the given title)
 
     return keyphrases
+
 
 # redundant - this code used to be used to extract key phrases at runtime, during charting
 # categorisation is now done as a post-processing step, earlier in the data pipeline

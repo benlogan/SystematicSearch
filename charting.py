@@ -7,14 +7,16 @@ import pandas as pd
 from operator import itemgetter
 from parser import parse_file
 
+
 CHART_COLOUR = 'g'
 FIELD_YEAR = 'year'
 FIELD_JOURNAL = 'journal'
 FIELD_AUTHOR = 'author'
 FIELD_KEYWORDS = 'keywords'
-FIELD_CATEGORIES = 'Categories_Extracted'
+FIELD_CATEGORIES = 'categories_extracted'
 FIELD_TITLE = 'title'
 CHART_LABEL_OFFSET = 0.02
+
 
 def add_labels(plt, x, y):
     # plt.text is using data coordinates here
@@ -25,6 +27,7 @@ def add_labels(plt, x, y):
     for i in range(len(x)):
         plt.text(i, offset, x[i], ha='center', rotation=90)
 
+
 # for horizontal bar charts...
 def add_labels_h(plt, x, y, total):
     offset = max(y) * CHART_LABEL_OFFSET
@@ -32,6 +35,7 @@ def add_labels_h(plt, x, y, total):
         #plt.text(offset, i, x[i], ha='left', va='center')
         # add the percentage of the total population
         plt.text(offset, i, x[i] + ' ' + str(round(y[i]/total*100,2)) + '%', ha='left', va='center')
+
 
 # retrieve the top X elements from a sorted list (for charting a subset)
 def top_x(sorted_list, x):
@@ -46,6 +50,7 @@ def top_x(sorted_list, x):
         top_x_dict[t[0]] = t[1]
 
     return top_x_dict
+
 
 def chart_publications(data, plt):
     years_dict = {}
@@ -65,6 +70,7 @@ def chart_publications(data, plt):
     plt.title("Green IT - Publications Over Time")
     plt.xlabel("Publication Year")
     plt.ylabel("Publication Count")
+
 
 def chart_journals(data, plt):
     journals_dict = {}
@@ -92,6 +98,7 @@ def chart_journals(data, plt):
     plt.title("Green IT - Popular Journals")
     plt.ylabel("Journal")
     plt.xlabel("Publication Count (total=" + str(total) + ')')
+
 
 def chart_authors(data, plt):
     authors = {}
@@ -132,6 +139,7 @@ def chart_authors(data, plt):
     plt.xlabel("Author")
     plt.ylabel("Publication Count")
 
+
 def chart_types(data, plt):
     types = {}
     for entry in data.entries:
@@ -155,6 +163,7 @@ def chart_types(data, plt):
     plt.xlabel("Type")
     plt.ylabel("Publication Count")
 
+
 def increment_category(year, category):
     if year in category:
         category[year] = category[year] + 1
@@ -162,33 +171,7 @@ def increment_category(year, category):
         category[year] = 1
 
 
-if __name__ == '__main__':
-    data = parse_file('data/enrichment/slr_enriched_cleaned_11_06_2024_17_22_22.bib')
-
-    plt.figure(1, figsize=(6,5))
-    chart_publications(data, plt)
-
-    #plt.figure(2, figsize=(6,5))
-    #chart_journals(data, plt)
-
-    #plt.figure(3, figsize=(6,5))
-    #chart_authors(data, plt)
-
-    # limited value - may not include in final research...
-
-    #plt.figure(4, figsize=(6,5))
-    #chart_types(data, plt)
-
-    #plt.figure(4, figsize=(6,10))
-    #charting_keywords.chart_keywords(data, plt)
-
-    plt.figure(4, figsize=(6,10))
-    charting_keywords.chart_actual_keywords(data, plt, FIELD_KEYWORDS, "Green IT - Keywords")
-
-    plt.figure(5, figsize=(6, 10))
-    charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES, "Green IT - Categories")
-
-    # new data table; categories
+def categories_table():
     categories = []
     keywords = []
     with open('data/words/phrases.txt', 'r') as file:
@@ -201,21 +184,21 @@ if __name__ == '__main__':
 
             line = file.readline()
 
-    table_data = {'Category':categories,'Keywords':keywords}
-    df = pd.DataFrame(table_data, columns=['Category','Keywords'])
+    table_data = {'Category': categories, 'Keywords': keywords}
+    df = pd.DataFrame(table_data, columns=['Category', 'Keywords'])
 
     fig, ax = plt.subplots(1, 1)
     ax.axis("tight")
     ax.axis("off")
-    the_table = ax.table(cellText=df.values, colLabels=df.columns, loc="center", colWidths=[0.05,1])
+    the_table = ax.table(cellText=df.values, colLabels=df.columns, loc="center", colWidths=[0.05, 1])
 
     the_table.auto_set_font_size(False)
     the_table.set_fontsize(9)
 
     # new chart - categories by date
-    # refactor this code before committing!!
-    # I have the desired output, sort of
-    # needs to be better use of data structures and
+    # FIXME - refactor this code
+    # I have the desired output
+    # but needs better use of data structures and
     # output needs to be comma seperated, and line seperated
     # (to prevent the need for further manipulation and enable direct use in excel)
     cloud = {}
@@ -266,6 +249,7 @@ if __name__ == '__main__':
                     increment_category(year, lit)
                 if "ent" in categories:
                     increment_category(year, ent)
+
     print('cloud: ' + str(sorted(cloud.items())))
     print('energy: ' + str(sorted(energy.items())))
     print('alloc: ' + str(sorted(alloc.items())))
@@ -279,5 +263,33 @@ if __name__ == '__main__':
     print('hpc: ' + str(sorted(hpc.items())))
     print('lit: ' + str(sorted(lit.items())))
     print('ent: ' + str(sorted(ent.items())))
+
+
+if __name__ == '__main__':
+    data = parse_file('data/enrichment/slr_enriched_cleaned_11_06_2024_17_22_22.bib')
+
+    plt.figure(1, figsize=(6,5))
+    chart_publications(data, plt)
+
+    #plt.figure(2, figsize=(6,5))
+    #chart_journals(data, plt)
+
+    #plt.figure(3, figsize=(6,5))
+    #chart_authors(data, plt)
+
+    #plt.figure(4, figsize=(6,5))
+    #chart_types(data, plt)
+
+    #plt.figure(4, figsize=(6,10))
+    #charting_keywords.chart_keywords(data, plt)
+
+    plt.figure(4, figsize=(6,10))
+    charting_keywords.chart_actual_keywords(data, plt, FIELD_KEYWORDS, "Green IT - Keywords")
+
+    plt.figure(5, figsize=(6, 10))
+    charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES, "Green IT - Categories")
+
+    # new data table; categories
+    #categories_table()
 
     plt.show()
