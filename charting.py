@@ -12,8 +12,10 @@ CHART_COLOUR = 'g'
 FIELD_YEAR = 'year'
 FIELD_JOURNAL = 'journal'
 FIELD_AUTHOR = 'author'
+FIELD_ABSTRACT = 'abstract'
 FIELD_KEYWORDS = 'keywords'
 FIELD_CATEGORIES = 'categories_extracted'
+FIELD_CATEGORIES_ABSTRACT = 'Categories_Extracted_Abstract'
 FIELD_TITLE = 'title'
 CHART_LABEL_OFFSET = 0.02
 
@@ -266,7 +268,7 @@ def categories_table():
 
 
 if __name__ == '__main__':
-    data = parse_file('data/enrichment/slr_enriched_cleaned_11_06_2024_17_22_22.bib')
+    data = parse_file('data/enrichment/categorised_slr_18_06_2024_12_09_58.bib')
 
     plt.figure(1, figsize=(6,5))
     chart_publications(data, plt)
@@ -288,6 +290,9 @@ if __name__ == '__main__':
 
     plt.figure(5, figsize=(6, 10))
     charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES, "Green IT - Categories")
+
+    plt.figure(6, figsize=(6, 10))
+    charting_keywords.chart_actual_keywords(data, plt, FIELD_CATEGORIES_ABSTRACT, "Green IT - Categories (Abstract)")
 
     # new data table; categories
     #categories_table()

@@ -1,5 +1,7 @@
 import re
 
+# I think this code is redundant now?
+
 def categorize_title(title):
     categories = []
     if "energy" in title.lower() or "power" in title.lower() or "efficient" in title.lower():
