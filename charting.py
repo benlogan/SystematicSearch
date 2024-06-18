@@ -280,7 +280,7 @@ if __name__ == '__main__':
     #plt.figure(4, figsize=(6,5))
     #chart_types(data, plt)
 
-    #plt.figure(4, figsize=(6,10))
+    #plt.figure(3, figsize=(6,10))
     #charting_keywords.chart_keywords(data, plt)
 
     plt.figure(4, figsize=(6,10))
